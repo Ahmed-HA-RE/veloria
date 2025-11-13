@@ -8,7 +8,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Veloria',
+  title: {
+    template: '%s | Veloria',
+    default: 'Veloria',
+  },
   description:
     'Discover premium products at unbeatable prices on Veloria a modern, secure, and seamless shopping experience in the UAE. Shop smart, shop Veloria.',
 };
@@ -20,7 +23,11 @@ const RootLayout = ({
 }>) => {
   return (
     <html className={inter.className} lang='en'>
-      <body>{children}</body>
+      <body>
+        <div className='flex flex-col min-h-screen'>
+          <main className='flex-grow container'>{children}</main>
+        </div>
+      </body>
     </html>
   );
 };
