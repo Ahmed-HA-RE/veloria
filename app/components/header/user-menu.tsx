@@ -23,12 +23,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 export default function UserMenu() {
-  const [user, setUser] = useState({
-    role: 'user',
-  });
+  const [user, setUser] = useState<null | { role: string }>(null);
 
   const adminLinks =
-    user.role === 'admin'
+    user && user?.role === 'admin'
       ? [
           {
             href: '/admin/overview',
@@ -53,7 +51,7 @@ export default function UserMenu() {
 
   const userMenuLinks = [...baseLinks, ...adminLinks];
 
-  return (
+  return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
@@ -95,5 +93,11 @@ export default function UserMenu() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  ) : (
+    <div className='pb-1'>
+      <Button className='bg-blue-900 dark:bg-white dark:hover:bg-gray-300 hover:bg-blue-950 '>
+        Sign In
+      </Button>
+    </div>
   );
 }

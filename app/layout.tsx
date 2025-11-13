@@ -4,6 +4,7 @@ import './globals.css';
 import { APP_NAME } from '@/lib/constants';
 import Header from './components/header/Header';
 import Footer from './components/Footer';
+import { ThemeProvider } from './components/ui/theme-provider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,13 +25,20 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html className={inter.className} lang='en'>
+    <html className={inter.className} lang='en' suppressHydrationWarning>
       <body>
-        <div className='flex flex-col min-h-screen'>
-          <Header />
-          <main className='flex-grow container'>{children}</main>
-          <Footer />
-        </div>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='light'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className='flex flex-col min-h-screen'>
+            <Header />
+            <main className='flex-grow container'>{children}</main>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

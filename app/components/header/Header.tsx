@@ -16,14 +16,14 @@ const Header = () => {
   const [openSheet, setOpenSheet] = useState(false);
 
   return (
-    <header className='border-b px-4 py-3 md:px-6'>
-      <div className='max-w-7xl mx-auto'>
+    <header className='border-b dark:dark-border-color  py-3'>
+      <div className='max-w-7xl mx-auto px-3'>
         <div className='flex h-16 items-center justify-between gap-2'>
           {/* Left side */}
           <div className='flex flex-1/6 md:flex-1/2 items-center gap-1'>
             {/* Sheet trigger */}
             <Button
-              className='group size-8 cursor-pointer hover:bg-blue-50 transition'
+              className='group size-8 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-100/20 dark:hover:text-white transition'
               variant='ghost'
               size={'icon'}
               onClick={() => setOpenSheet(!openSheet)}
@@ -77,12 +77,12 @@ const Header = () => {
           <div className='relative flex flex-row items-center justify-center gap-2 flex-1/2'>
             <Input
               id={id}
-              className='peer h-8 ps-8 pe-2 focus-visible:border-blue-400 focus-visible:ring-blue-400'
+              className='peer h-8 ps-8 pe-2 focus-visible:border-blue-400 focus-visible:ring-blue-400 dark:focus-visible:border-blue-500 dark:focus-visible:ring-blue-500 dark:border-white dark:text-white dark:placeholder:text-gray-50/70'
               placeholder='Search...'
               type='search'
             />
 
-            <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 text-muted-foreground/80 peer-disabled:opacity-50'>
+            <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 dark:text-gray-50/80 peer-disabled:opacity-50'>
               <SearchIcon size={16} />
             </div>
           </div>
@@ -96,14 +96,14 @@ const Header = () => {
               {/* Theme */}
               <Theme />
               {/* Cart */}
-              <div className='relative w-fit cursor-pointer hover:bg-blue-50 transition duration-200 rounded-md'>
+              <div className='relative w-fit cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-100/10 dark:hover:text-white transition duration-200 rounded-md'>
                 <Link href={'/cart'}>
                   <Avatar className='size-9 rounded-sm'>
                     <AvatarFallback className='rounded-sm bg-0'>
                       <ShoppingCartIcon className='size-6' />
                     </AvatarFallback>
                   </Avatar>
-                  <Badge className='absolute -top-1 right-0 h-5 min-w-5 rounded-full px-1 tabular-nums text-xs'>
+                  <Badge className='absolute -top-1 right-0.5 h-5 min-w-5 rounded-full px-1 tabular-nums text-xs'>
                     8
                   </Badge>
                 </Link>
