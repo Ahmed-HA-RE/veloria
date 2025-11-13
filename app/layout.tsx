@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { APP_NAME } from '@/lib/constants';
+import Header from './components/header/Header';
+import Footer from './components/Footer';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -9,11 +12,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Veloria',
-    default: 'Veloria',
+    template: `%s | ${APP_NAME}`,
+    default: `${APP_NAME}`,
   },
-  description:
-    'Discover premium products at unbeatable prices on Veloria a modern, secure, and seamless shopping experience in the UAE. Shop smart, shop Veloria.',
+  description: `Discover premium products at unbeatable prices on ${APP_NAME} a modern, secure, and seamless shopping experience in the UAE. Shop smart, shop ${APP_NAME}.`,
 };
 
 const RootLayout = ({
@@ -25,7 +27,9 @@ const RootLayout = ({
     <html className={inter.className} lang='en'>
       <body>
         <div className='flex flex-col min-h-screen'>
+          <Header />
           <main className='flex-grow container'>{children}</main>
+          <Footer />
         </div>
       </body>
     </html>
