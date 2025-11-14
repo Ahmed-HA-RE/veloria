@@ -20,7 +20,7 @@ const Header = () => {
       <div className='max-w-7xl mx-auto px-3'>
         <div className='flex h-16 items-center justify-between gap-2'>
           {/* Left side */}
-          <div className='flex flex-1/6 md:flex-1/2 items-center gap-1'>
+          <div className='flex flex-1/3 md:flex-1/2 items-center gap-1'>
             {/* Sheet trigger */}
             <Button
               className='group size-8 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-100/20 dark:hover:text-white transition'
@@ -74,7 +74,7 @@ const Header = () => {
             </div>
           </div>
           {/* Middle area */}
-          <div className='relative flex flex-row items-center justify-center gap-2 flex-1/2'>
+          <div className='relative flex flex-row items-center justify-center gap-2 flex-1/2 md:flex-1/3'>
             <Input
               id={id}
               className='peer h-8 ps-8 pe-2 focus-visible:border-blue-400 focus-visible:ring-blue-400 dark:focus-visible:border-blue-500 dark:focus-visible:ring-blue-500 dark:border-white dark:text-white dark:placeholder:text-gray-50/70'
@@ -91,7 +91,7 @@ const Header = () => {
           <CategorySheet openSheet={openSheet} setOpenSheet={setOpenSheet} />
 
           {/* Right side */}
-          <div className='flex md:flex-1/2 items-center justify-end gap-2 md:gap-4'>
+          <div className='flex flex-1/2 items-center justify-end gap-2 md:gap-4'>
             <div className='flex items-center md:gap-2'>
               {/* Theme */}
               <Theme />

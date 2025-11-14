@@ -28,13 +28,13 @@ const CategorySheet = ({ openSheet, setOpenSheet }: CategorySheetProps) => {
           <div className='text-sm flex flex-col w-full'>
             <Link
               href=''
-              className='hover:bg-blue-50 dark:hover:bg-gray-100/30 cursor-pointer rounded-md p-3'
+              className='hover:bg-blue-50 text-black dark:text-white dark:hover:bg-gray-100/30 cursor-pointer rounded-md p-3'
             >
               Mens Dress Shirts (5)
             </Link>
             <Link
               href=''
-              className='hover:bg-blue-50 dark:hover:bg-gray-100/30 cursor-pointer rounded-md p-3'
+              className='hover:bg-blue-50 text-black dark:text-white dark:hover:bg-gray-100/30 cursor-pointer rounded-md p-3'
             >
               Mens Sweat Shirts (1)
             </Link>
