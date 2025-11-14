@@ -9,5 +9,9 @@ export const getLatestProducts = async () => {
     },
     take: LIMIT_LIST_PRODUCTS,
   });
-  return data;
+  return data.map((product) => ({
+    ...product,
+    price: product.price.toFixed(2),
+    rating: product.rating.toFixed(1),
+  }));
 };

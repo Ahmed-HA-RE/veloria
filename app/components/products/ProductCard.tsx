@@ -31,15 +31,14 @@ const ProductCard = ({ product }: { product: Product }) => {
           </CardHeader>
           <CardFooter className='flex flex-row  items-center justify-between w-full px-3'>
             {/* rate */}
-            <p>{Number(product.rating)} Stars</p>
+            <p>{product.rating} Stars</p>
             {/* price */}
             {product.stock === 0 ? (
               <span className='text-red-600 font-medium'>Out Of Stock</span>
             ) : (
               <div className='flex flex-row items-center justify-center gap-0.5 dark:text-orange-400'>
-                ca
                 <p className='dirham-symbol'>&#xea;</p>
-                <p>{Number(product.price)}</p>
+                <p>{product.price}</p>
               </div>
             )}
           </CardFooter>
