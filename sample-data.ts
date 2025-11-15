@@ -1,4 +1,16 @@
+import { hashSync } from 'bcrypt-ts';
+
 const sampleData = {
+  user: [
+    {
+      name: 'Ahmed',
+      email: 'ahmed@gmail.com',
+      role: 'admin',
+      password: hashSync('12345', 10),
+    },
+    { name: 'Ali', email: 'ali@gmail.com', password: hashSync('12345', 10) },
+  ],
+
   products: [
     {
       name: 'Nike Air Sprint Shoes',
@@ -8,7 +20,6 @@ const sampleData = {
       images: [
         '/images/sample-products/p7-1.jpg',
         '/images/sample-products/p7-2.jpg',
-        '/images/sample-products/p7-3.jpg',
       ],
       price: 765.95,
       brand: 'Nike',
