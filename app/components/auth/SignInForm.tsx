@@ -23,7 +23,7 @@ import { useState } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter } from 'next/navigation';
 import { Checkbox } from '../ui/checkbox';
-import { authClient } from '@/lib/authClient';
+import { signInUser } from '@/app/actions/auth';
 
 const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const [isPending, setIsPending] = useState(false);
@@ -40,10 +40,10 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
 
   const onSubmit = async (values: SignInUserForm) => {
     setIsPending(true);
-    const { error } = await authClient.signIn.email(values);
+    const result = await signInUser(values);
 
-    if (error && error.message) {
-      destructiveToast(error.message);
+    if (result && !result.success && result.message) {
+      destructiveToast(result.message);
       setIsPending(false);
       return;
     } else {

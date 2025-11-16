@@ -18,7 +18,7 @@ import { type RegisterUserForm, registerSchema } from '@/schema/userSchema';
 import { useState } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter } from 'next/navigation';
-import { authClient } from '@/lib/authClient';
+import { registerUser } from '@/app/actions/auth';
 
 const RegisterForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const [isPending, setIsPending] = useState(false);
@@ -36,16 +36,16 @@ const RegisterForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
 
   const onSubmit = async (values: RegisterUserForm) => {
     setIsPending(true);
-    const { error } = await authClient.signUp.email(values);
+    const result = await registerUser(values);
 
-    if (error && error.message) {
-      destructiveToast(error.message);
+    if (result && !result.success && result.message) {
+      destructiveToast(result.message);
       setIsPending(false);
       return;
     } else {
       setIsPending(false);
-      successToast('Sign in successful! Redirecting...');
-      setTimeout(() => router.push('/'), 1500);
+      successToast('Success! Check your inbox to activate full access.');
+      setTimeout(() => router.push('/verify-email'), 1500);
     }
   };
 

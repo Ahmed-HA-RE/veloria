@@ -38,7 +38,7 @@ model User {
   name          String
   email         String
   emailVerified Boolean   @default(false)
-  image         String?   @default("https://res.cloudinary.com/ahmed--dev/image/upload/v1755243182/default_avatar_7541d4c434.webp")
+  image         String?
   role          String    @default("user")
   address       Json?     @db.Json
   paymentMethod String?

@@ -9,6 +9,15 @@ export const auth = betterAuth({
     provider: 'postgresql',
   }),
 
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        input: false,
+      },
+    },
+  },
+
   session: {
     expiresIn: 60 * 60 * 24 * 30, // 30 days
   },
@@ -19,19 +28,5 @@ export const auth = betterAuth({
     maxPasswordLength: 100,
   },
 
-  plugins: [
-    nextCookies(),
-    customSession(async ({ session, user }) => {
-      const userRole = await prisma.user.findUnique({
-        where: { id: user.id },
-      });
-      return {
-        session,
-        user: {
-          ...user,
-          role: userRole?.role,
-        },
-      };
-    }),
-  ],
+  plugins: [nextCookies()],
 });

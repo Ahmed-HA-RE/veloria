@@ -11,25 +11,20 @@ const VerifyEmailBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className='dark bg-red-600 px-4 py-3 text-foreground md:py-2'>
-      <div className='flex gap-2 md:items-center'>
-        <div className='flex grow gap-3 md:items-center'>
+    <div className='dark bg-red-600 px-4 py-4 text-foreground'>
+      <div className='flex gap-2 justify-between items-center'>
+        <div className='flex gap-3 items-center mx-auto'>
           <Mail
-            className='shrink-0 opacity-90 max-md:mt-0.5'
+            className='opacity-90 max-md:mt-0.5'
             size={16}
             aria-hidden='true'
           />
-          <div className='flex grow flex-col justify-between gap-3 md:flex-row md:items-center'>
-            <p className='text-sm'>
-              Your account is almost ready! Check your email to verify your
-              address and complete your setup.
-            </p>
-            <div className='flex gap-2 max-md:flex-wrap'>
-              <Button size='sm' className='text-sm'>
-                Verify Email
-              </Button>
-            </div>
-          </div>
+          <p className='text-sm text-center'>
+            Check your inbox to verify your email or{' '}
+            <span className='underline decoration-2 underline-offset-4 decoration-white cursor-pointer'>
+              request a new one.
+            </span>
+          </p>
         </div>
         <Button
           variant='ghost'

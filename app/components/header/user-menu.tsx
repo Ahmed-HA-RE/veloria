@@ -19,14 +19,17 @@ import {
 import { FaUserLarge } from 'react-icons/fa6';
 import { TfiPackage } from 'react-icons/tfi';
 import { MdAdminPanelSettings } from 'react-icons/md';
-import { useState } from 'react';
 import Link from 'next/link';
+import { auth } from '@/lib/auth';
+import { signOutUser } from '@/app/actions/auth';
 
-export default function UserMenu() {
-  const [user, setUser] = useState<null | { role: string }>(null);
-
+const UserMenu = ({
+  session,
+}: {
+  session: typeof auth.$Infer.Session | null;
+}) => {
   const adminLinks =
-    user && user?.role === 'admin'
+    session && session.user.role === 'admin'
       ? [
           {
             href: '/admin/overview',
@@ -51,56 +54,72 @@ export default function UserMenu() {
 
   const userMenuLinks = [...baseLinks, ...adminLinks];
 
-  return user ? (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          className='h-auto p-0 pb-1 hover:bg-transparent cursor-pointer'
-        >
-          <Avatar>
-            <AvatarImage src='/origin/avatar.jpg' alt='Profile image' />
-            <AvatarFallback className='bg-gray-200 text-base'>
-              KK
-            </AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-52' align='end'>
-        <DropdownMenuLabel className='flex min-w-0 flex-col'>
-          <span className='truncate text-sm font-medium text-foreground'>
-            Keith Kennedy
-          </span>
-          <span className='truncate text-xs font-normal text-muted-foreground'>
-            k.kennedy@coss.com
-          </span>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          {userMenuLinks.map((link, index) => (
-            <DropdownMenuItem asChild key={index}>
-              <Link href={link.href}>
-                {link.icon}
-                {link.label}
-              </Link>
+  const handleSignOut = async () => {
+    await signOutUser();
+  };
+
+  return (
+    <>
+      {session?.user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant='ghost'
+              className='h-auto p-0 pb-1 hover:bg-transparent cursor-pointer'
+            >
+              <Avatar>
+                <AvatarImage
+                  src={
+                    session.user.image ||
+                    'https://res.cloudinary.com/ahmed--dev/image/upload/v1755243182/default_avatar_7541d4c434.webp'
+                  }
+                  alt='Profile image'
+                />
+                <AvatarFallback className='bg-gray-200 text-base font-semibold'>
+                  {session.user.name.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className='w-52' align='end'>
+            <DropdownMenuLabel className='flex min-w-0 flex-col'>
+              <span className='truncate text-sm font-medium text-foreground'>
+                {session.user.name}
+              </span>
+              <span className='truncate text-xs font-normal text-muted-foreground'>
+                {session.user.email}
+              </span>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {userMenuLinks.map((link, index) => (
+                <DropdownMenuItem asChild key={index}>
+                  <Link className='dark:hover:text-black' href={link.href}>
+                    {link.icon}
+                    {link.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className='dark:hover:text-black'>
+              <LogOutIcon size={16} aria-hidden='true' />
+              <span onClick={handleSignOut}>Logout</span>
             </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOutIcon size={16} aria-hidden='true' />
-          <span>Logout</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  ) : (
-    <div className='pb-1'>
-      <Button
-        asChild
-        className='bg-blue-900 dark:bg-white dark:hover:bg-gray-300 hover:bg-blue-950 '
-      >
-        <Link href='/signin'>Sign In</Link>
-      </Button>
-    </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className='pb-1'>
+          <Button
+            asChild
+            className='bg-blue-900 dark:bg-white dark:hover:bg-gray-300 hover:bg-blue-950 '
+          >
+            <Link href='/signin'>Sign In</Link>
+          </Button>
+        </div>
+      )}
+    </>
   );
-}
+};
+
+export default UserMenu;

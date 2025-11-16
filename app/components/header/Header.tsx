@@ -10,8 +10,13 @@ import { Badge } from '../ui/badge';
 import Link from 'next/link';
 import Image from 'next/image';
 import CategorySheet from './CategorySheet';
+import { auth } from '@/lib/auth';
 
-const Header = () => {
+const Header = ({
+  session,
+}: {
+  session: typeof auth.$Infer.Session | null;
+}) => {
   const id = useId();
   const [openSheet, setOpenSheet] = useState(false);
 
@@ -110,7 +115,7 @@ const Header = () => {
               </div>
             </div>
             {/* User menu */}
-            <UserMenu />
+            <UserMenu session={session} />
           </div>
         </div>
       </div>
