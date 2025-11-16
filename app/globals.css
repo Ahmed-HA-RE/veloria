@@ -7,6 +7,10 @@
   .container {
     @apply max-w-7xl p-6 mx-auto;
   }
+
+  .auth-input {
+    @apply border-black/50 ring-black/50 focus-visible:ring-blue-500 focus-visible:border-blue-500 dark:border-gray-300 dark:ring-gray-300 dark:focus-visible:ring-blue-500 dark:focus-visible:border-blue-500;
+  }
 }
 
 @utility dark-border-color {
