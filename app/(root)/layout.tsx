@@ -11,7 +11,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className='flex flex-col min-h-screen'>
-      {session && session.user.role !== 'admin' ? (
+      {session && !session.user.emailVerified ? (
         <VerifyEmailBanner session={session} />
       ) : null}
       <Header session={session} />

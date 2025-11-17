@@ -35,17 +35,18 @@ export const auth = betterAuth({
   plugins: [
     nextCookies(),
     emailOTP({
+      otpLength: 6,
+      expiresIn: 600, // 10 min
       async sendVerificationOTP({ email, otp, type }) {
         if (type === 'email-verification') {
           const { error } = await resend.emails.send({
-            from: 'Acme <onboarding@resend.dev>',
+            from: 'Veloria <noreply@ahmedrehandev.net>',
+            replyTo: process.env.REPLY_TO_GMAIL,
             to: email,
             subject: 'Email Verification',
             react: VeloriaEmailVerification({ otp }),
           });
           console.log(error);
-        } else {
-          // Send  OTP for password reset
         }
       },
     }),

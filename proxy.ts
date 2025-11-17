@@ -7,12 +7,25 @@ export const proxy = async (req: NextRequest) => {
     headers: await headers(),
   });
 
-  if (session && session.user.role !== 'admin') {
+  if (
+    session &&
+    session.user.role !== 'admin' &&
+    req.nextUrl.pathname === '/register'
+  ) {
     return NextResponse.redirect(new URL('/', req.url));
-  } else if (session && session.user.role !== 'admin') {
+  } else if (
+    session &&
+    session.user.role !== 'admin' &&
+    req.nextUrl.pathname === '/signin'
+  ) {
+    return NextResponse.redirect(new URL('/', req.url));
+  } else if (
+    (!session || session.user.emailVerified) &&
+    req.nextUrl.pathname === '/verify-email'
+  ) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 };
 export const config = {
-  matcher: ['/register', '/signin'],
+  matcher: ['/register', '/signin', '/verify-email'],
 };

@@ -1,11 +1,7 @@
 import SignInForm from '@/app/components/auth/SignInForm';
 
 const SignInPage = () => {
-  return (
-    <main>
-      <SignInForm />
-    </main>
-  );
+  return <SignInForm />;
 };
 
 export default SignInPage;

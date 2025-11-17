@@ -1,3 +1,7 @@
+import { config } from 'dotenv';
+
+config();
+
 import {
   Body,
   Column,
@@ -22,7 +26,7 @@ interface VeloriaEmailVerificationProps {
 
 const baseUrl =
   process.env.NODE_ENV === 'production'
-    ? `${process.env.VERCEL_APP}/images`
+    ? `${process.env.NEXT_PUBLIC_PROD_URL}/images`
     : '/static';
 
 export const VeloriaEmailVerification = ({
@@ -124,7 +128,7 @@ export const VeloriaEmailVerification = ({
           <Section>
             <Link
               className='text-[#b7b7b7] underline'
-              href={`${process.env.NEXT_PUBLIC_PROD_URL}`}
+              href={`${process.env.VERCEL_URL}`}
               target='_blank'
               rel='noopener noreferrer'
             >
@@ -133,7 +137,7 @@ export const VeloriaEmailVerification = ({
             &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
             <Link
               className='text-[#b7b7b7] underline'
-              href={`${process.env.NEXT_PUBLIC_PROD_URL}/products`}
+              href={`${process.env.VERCEL_URL}/products`}
               target='_blank'
               rel='noopener noreferrer'
             >

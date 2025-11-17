@@ -100,3 +100,23 @@ export const sendEmailVerificationOTP = async (email: string) => {
     }
   }
 };
+
+export const verifyEmail = async (email: string, otp: string) => {
+  try {
+    await auth.api.verifyEmailOTP({
+      body: {
+        email,
+        otp,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Email verification completed!',
+    };
+  } catch (error) {
+    if (error instanceof APIError) {
+      return { success: false, message: error.message };
+    }
+  }
+};

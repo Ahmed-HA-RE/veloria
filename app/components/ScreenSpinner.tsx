@@ -8,13 +8,10 @@ const ScreenSpinner = ({ mutate }: { mutate: boolean }) => {
   return (
     <div className='flex min-h-screen items-center justify-center fixed inset-0 backdrop-blur-[3px] z-50'>
       {mutate ? (
-        <ClimbingBoxLoader
-          color={theme === 'light' ? '#0c65eb' : 'white'}
-          size={35}
-        />
+        <ClimbingBoxLoader color='#0c65eb' size={35} />
       ) : (
         <ClipLoader
-          color={theme === 'light' ? '#0c65eb' : 'white'}
+          color='#0c65eb'
           cssOverride={{
             borderWidth: '4px',
           }}

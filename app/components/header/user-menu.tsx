@@ -64,8 +64,8 @@ const UserMenu = ({
     const result = await signOutUser();
 
     if (result.success) {
-      setIsPending(false);
       router.push('/signin');
+      setIsPending(false);
     }
   };
 
