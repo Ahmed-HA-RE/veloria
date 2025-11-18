@@ -35,7 +35,7 @@ export const registerUser = async (values: RegisterUserForm) => {
       success: true,
       message: 'Registration successful.',
     };
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof APIError) {
       return { success: false, message: error.message };
     }

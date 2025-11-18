@@ -10,6 +10,11 @@ import { ChevronLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Forgot Password',
+  description: 'Enter your email to receive password reset instructions.',
+};
+
 const ForgotPasswordPage = () => {
   return (
     <div className='flex  items-center justify-center'>

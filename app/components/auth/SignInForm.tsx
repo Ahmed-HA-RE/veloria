@@ -160,7 +160,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 <FieldSeparator>Or continue with</FieldSeparator>
                 <Field className='grid grid-cols-2 gap-4'>
                   <Button
-                    className="bg-white hover:bg-gray-100 border-black/50  [&_svg:not([class*='size-'])]:size-6"
+                    className="hover:bg-gray-100 border-black/50  [&_svg:not([class*='size-'])]:size-6"
                     variant='outline'
                     aria-label='Login with Github'
                     onClick={() => handleSocialSignIn('github')}
@@ -169,7 +169,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                     <FaGithub className='text-black' aria-hidden='true' />
                   </Button>
                   <Button
-                    className="bg-white hover:bg-[#DB4437]/90 border-black/50 hover:border-none [&_svg:not([class*='size-'])]:size-6"
+                    className="hover:bg-[#DB4437]/90 border-black/50 hover:border-none [&_svg:not([class*='size-'])]:size-6"
                     variant='outline'
                     aria-label='Login with Google'
                     type='button'

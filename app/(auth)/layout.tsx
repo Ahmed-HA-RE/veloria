@@ -23,7 +23,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           <div className='bg-muted relative hidden lg:block'>
             <Image
               src={'/images/auth.jpg'}
-              alt='Auth Backround'
+              alt='Auth Background'
               width={0}
               height={0}
               loading='eager'

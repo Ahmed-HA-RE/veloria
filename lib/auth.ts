@@ -18,7 +18,7 @@ export const auth = betterAuth({
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.path === '/error' && ctx.method === 'GET' && ctx.query?.error) {
-        return ctx.redirect('/');
+        return ctx.redirect('/signin');
       }
     }),
   },
