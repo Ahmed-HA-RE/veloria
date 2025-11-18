@@ -1,15 +1,5 @@
 import z from 'zod';
-
-export const moneyAmountString = () => {
-  return z
-    .string()
-    .regex(/^(0|[1-9]\d*)\.\d{2}$/, {
-      message: 'Must be a number with exactly 2 decimal places',
-    })
-    .refine((val) => Number.parseFloat(val) > 0, {
-      message: 'Money amount must be greater than 0',
-    });
-};
+import { moneyAmountString } from '@/lib/utils';
 
 export const insertProductSchema = z.object({
   name: z

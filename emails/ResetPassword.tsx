@@ -16,6 +16,7 @@ import {
   pixelBasedPreset,
   Link,
 } from '@react-email/components';
+import { APP_NAME } from '@/lib/constants';
 
 interface VeloriaResetPasswordProps {
   userName: string;
@@ -51,13 +52,13 @@ const VeloriaResetPassword = ({
           />
         </Head>
         <Body className='bg-[#f6f9fc] py-2.5'>
-          <Preview>Veloria reset your password</Preview>
+          <Preview>{`${APP_NAME} reset your password`}</Preview>
           <Container className='bg-white border border-solid border-[#f0f0f0] p-[45px]'>
             <Img
               src={`${baseUrl}/logo.png`}
               width='50'
               height='50'
-              alt='Veloria'
+              alt={`${APP_NAME}`}
               className='mb-2'
             />
             <Section>
@@ -65,7 +66,7 @@ const VeloriaResetPassword = ({
                 Greeting {userName},
               </Text>
               <Text className='text-base font-dropbox font-light text-[#404040] leading-[26px]'>
-                Someone recently requested a password change for your Veloria
+                Someone recently requested a password change for your {APP_NAME}
                 account. If this was you, you can set a new password here:
               </Text>
               <Link
@@ -83,7 +84,7 @@ const VeloriaResetPassword = ({
                 email to anyone.
               </Text>
               <Text className='text-base font-bold  text-[#404040] leading-[26px]'>
-                Enjoy Shopping at Veloria!
+                Enjoy Shopping at {APP_NAME}!
               </Text>
             </Section>
           </Container>

@@ -10,6 +10,7 @@ import CategorySheet from './CategorySheet';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { headers } from 'next/headers';
+import { APP_NAME } from '@/lib/constants';
 
 const Header = async () => {
   const session = await auth.api.getSession({
@@ -43,13 +44,13 @@ const Header = async () => {
               >
                 <Image
                   src={'/images/logo.png'}
-                  alt='Veloria Logo'
+                  alt={`${APP_NAME} Logo`}
                   width={45}
                   height={45}
                   loading='eager'
                 />
                 <h4 className='hidden md:block font-bold text-2xl pt-1'>
-                  Veloria
+                  {APP_NAME}
                 </h4>
               </Link>
             </div>

@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
+import z from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,4 +43,15 @@ export const infoToast = (message: string | undefined) => {
       '--normal-border': 'var(--color-blue-500)',
     } as React.CSSProperties,
   });
+};
+
+export const moneyAmountString = () => {
+  return z
+    .string()
+    .regex(/^(0|[1-9]\d*)\.\d{2}$/, {
+      message: 'Must be a number with exactly 2 decimal places',
+    })
+    .refine((val) => Number.parseFloat(val) > 0, {
+      message: 'Money amount must be greater than 0',
+    });
 };

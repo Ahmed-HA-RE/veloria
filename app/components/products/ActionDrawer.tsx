@@ -10,14 +10,53 @@ import {
 } from '@/app/components/ui/drawer';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { ArrowLeft, CheckCircleIcon } from 'lucide-react';
+import { ArrowLeft, CheckCircleIcon, Plus } from 'lucide-react';
 import { Product } from '@/types';
 import { useState } from 'react';
 import Link from 'next/link';
+import { destructiveToast } from '@/lib/utils';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { Spinner } from '../ui/spinner';
+import { addToCart } from '../../actions/cart';
 
 const ActionDrawer = ({ product }: { product: Product }) => {
   const isMobile = useIsMatchMedia('(max-width: 768px)');
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+
+  const handleAddToCart = async () => {
+    setIsPending(true);
+    const res = await addToCart({
+      image: product.images[0],
+      productId: product.id,
+      qty: 1,
+      price: product.price,
+      name: product.name,
+      slug: product.slug,
+    });
+
+    if (res && !res.success) {
+      destructiveToast(res.message);
+      setIsPending(false);
+      return;
+    }
+
+    toast(res?.message, {
+      action: {
+        label: 'Go to cart',
+        onClick: () => {
+          router.push('/cart');
+        },
+      },
+      position: 'top-left',
+      classNames: {
+        toast: '!w-[468px]',
+      },
+    });
+    setIsPending(false);
+  };
 
   return (
     <>
@@ -77,10 +116,19 @@ const ActionDrawer = ({ product }: { product: Product }) => {
           </div>
           <DrawerFooter className='gap-3'>
             <Button
-              disabled={product.stock === 0}
+              disabled={product.stock === 0 || isPending}
               className='w-full bg-gray-800 hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200'
+              onClick={handleAddToCart}
             >
-              {product.stock === 0 ? 'Out Of Stock' : 'Add to Cart'}
+              {product.stock === 0 ? (
+                'Out Of Stock'
+              ) : isPending ? (
+                <Spinner className='size-7' />
+              ) : (
+                <>
+                  <Plus /> Add to Cart
+                </>
+              )}
             </Button>
             <Button
               onClick={() => setOpenDrawer(false)}

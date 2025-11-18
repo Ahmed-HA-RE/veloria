@@ -1,6 +1,7 @@
 'use client';
 
 import { cn, destructiveToast, successToast } from '@/lib/utils';
+import { APP_NAME } from '@/lib/constants';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardContent } from '@/app/components/ui/card';
 import {
@@ -70,7 +71,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 <div className='flex flex-col items-center w-full gap-2 '>
                   <h1 className='text-2xl font-bold'>Welcome back</h1>
                   <p className='text-sm text-center w-full'>
-                    Sign in to your Veloria account{' '}
+                    Sign in to your {APP_NAME} account{' '}
                   </p>
                 </div>
 

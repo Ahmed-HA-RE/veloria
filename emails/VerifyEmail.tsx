@@ -19,6 +19,7 @@ import {
   Font,
   pixelBasedPreset,
 } from '@react-email/components';
+import { APP_NAME } from '@/lib/constants';
 
 interface VeloriaEmailVerificationProps {
   otp: string;
@@ -58,7 +59,7 @@ export const VeloriaEmailVerification = ({
               src={`${baseUrl}/logo.png`}
               width='50'
               height='50'
-              alt='Veloria'
+              alt={`${APP_NAME}`}
               className='mx-auto'
             />
           </Section>
@@ -90,7 +91,7 @@ export const VeloriaEmailVerification = ({
                   src={`${baseUrl}/logo.png`}
                   width='40'
                   height='40'
-                  alt='Veloria'
+                  alt={`${APP_NAME}`}
                 />
               </Column>
               <Column className='' align='right'>
@@ -144,7 +145,7 @@ export const VeloriaEmailVerification = ({
               Products
             </Link>
             <Text className='text-xs leading-[15px] text-left mb-[50px] text-[#b7b7b7]'>
-              ©2025 Veloria Shop, LLC, Abu Dhabi, UAE
+              {`©2025 ${APP_NAME} Shop, LLC, Abu Dhabi, UAE`}
               <br />
               <br />
               All rights reserved.

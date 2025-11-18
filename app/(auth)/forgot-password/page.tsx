@@ -1,4 +1,5 @@
 import ForgotPasswordForm from '@/app/components/auth/ForgotPasswordForm';
+import { APP_NAME } from '@/lib/constants';
 import {
   Card,
   CardContent,
@@ -22,7 +23,7 @@ const ForgotPasswordPage = () => {
         <CardHeader className='gap-6'>
           <Image
             src={'/images/logo.png'}
-            alt='Veloria Logo'
+            alt={`${APP_NAME} Logo`}
             width={40}
             height={40}
             className='gap-3'
