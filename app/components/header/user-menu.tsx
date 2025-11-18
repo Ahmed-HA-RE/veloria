@@ -1,11 +1,7 @@
 'use client';
 
 import { LogOutIcon } from 'lucide-react';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/app/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/app/components/ui/avatar';
 import { Button } from '@/app/components/ui/button';
 import {
   DropdownMenu,
@@ -22,9 +18,10 @@ import { MdAdminPanelSettings } from 'react-icons/md';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { signOutUser } from '@/app/actions/auth';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ScreenSpinner from '../ScreenSpinner';
+import Image from 'next/image';
 
 const UserMenu = ({
   session,
@@ -81,16 +78,23 @@ const UserMenu = ({
               className='h-auto p-0 pb-1 hover:bg-transparent cursor-pointer'
             >
               <Avatar>
-                <AvatarImage
-                  src={
-                    session.user.image ||
-                    'https://res.cloudinary.com/ahmed--dev/image/upload/v1755243182/default_avatar_7541d4c434.webp'
+                <Suspense
+                  fallback={
+                    <AvatarFallback className='bg-gray-200 text-base font-semibold'>
+                      {session.user.name.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   }
-                  alt='Profile image'
-                />
-                <AvatarFallback className='bg-gray-200 text-base font-semibold'>
-                  {session.user.name.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
+                >
+                  <Image
+                    src={
+                      session.user.image ||
+                      'https://res.cloudinary.com/ahmed--dev/image/upload/v1755243182/default_avatar_7541d4c434.webp'
+                    }
+                    alt='logo'
+                    width={50}
+                    height={50}
+                  />
+                </Suspense>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>

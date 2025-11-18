@@ -23,7 +23,7 @@ import { useState } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter } from 'next/navigation';
 import { Checkbox } from '../ui/checkbox';
-import { signInUser } from '@/app/actions/auth';
+import { signInUser, singInSocials } from '@/app/actions/auth';
 
 const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const [isPending, setIsPending] = useState(false);
@@ -51,6 +51,10 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
       successToast('Sign in successful! Redirecting...');
       setTimeout(() => router.push('/'), 1500);
     }
+  };
+
+  const handleSocialSignIn = async (provider: 'google' | 'github') => {
+    await singInSocials(provider);
   };
 
   return (
@@ -159,6 +163,8 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                     className="bg-white hover:bg-gray-100 border-black/50  [&_svg:not([class*='size-'])]:size-6"
                     variant='outline'
                     aria-label='Login with Github'
+                    onClick={() => handleSocialSignIn('github')}
+                    type='button'
                   >
                     <FaGithub className='text-black' aria-hidden='true' />
                   </Button>
@@ -166,6 +172,8 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                     className="bg-white hover:bg-[#DB4437]/90 border-black/50 hover:border-none [&_svg:not([class*='size-'])]:size-6"
                     variant='outline'
                     aria-label='Login with Google'
+                    type='button'
+                    onClick={() => handleSocialSignIn('google')}
                   >
                     <FcGoogle aria-hidden='true' />
                   </Button>

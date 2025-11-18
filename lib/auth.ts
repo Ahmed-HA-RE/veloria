@@ -6,6 +6,7 @@ import { emailOTP } from 'better-auth/plugins/email-otp';
 import { Resend } from 'resend';
 import VeloriaEmailVerification from '@/emails/VerifyEmail';
 import VeloriaResetPassword from '@/emails/ResetPassword';
+import { createAuthMiddleware } from 'better-auth/api';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -13,6 +14,14 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      if (ctx.path === '/error' && ctx.method === 'GET' && ctx.query?.error) {
+        return ctx.redirect('/');
+      }
+    }),
+  },
 
   user: {
     additionalFields: {
@@ -44,6 +53,19 @@ export const auth = betterAuth({
       });
     },
     resetPasswordTokenExpiresIn: 60 * 60 * 1000,
+  },
+
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      prompt: 'select_account',
+    },
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      prompt: 'select_account',
+    },
   },
 
   plugins: [

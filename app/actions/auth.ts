@@ -10,6 +10,7 @@ import {
 } from '@/schema/userSchema';
 import { APIError } from 'better-auth';
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const registerUser = async (values: RegisterUserForm) => {
   try {
@@ -138,5 +139,17 @@ export const requestResetPassowrd = async (email: string) => {
     if (error instanceof APIError) {
       return { success: false, message: error.message };
     }
+  }
+};
+
+export const singInSocials = async (provider: 'google' | 'github') => {
+  const data = await auth.api.signInSocial({
+    body: {
+      provider,
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url);
   }
 };
