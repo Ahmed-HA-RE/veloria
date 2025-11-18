@@ -14,7 +14,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
       {session && !session.user.emailVerified ? (
         <VerifyEmailBanner session={session} />
       ) : null}
-      <Header session={session} />
+      <Header />
       <main className='flex-grow container'>{children}</main>
       <Footer />
     </div>

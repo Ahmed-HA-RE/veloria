@@ -50,7 +50,7 @@ const OTPForm = ({ session }: { session: typeof auth.$Infer.Session }) => {
     defaultValues: {
       otp: '',
     },
-    mode: 'all',
+    mode: 'onSubmit',
   });
 
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {

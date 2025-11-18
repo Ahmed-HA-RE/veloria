@@ -36,7 +36,7 @@ const ResetPasswordForm = ({
       password: '',
       confirmPassword: '',
     },
-    mode: 'all',
+    mode: 'onSubmit',
   });
 
   if (!token) {

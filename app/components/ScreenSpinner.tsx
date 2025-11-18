@@ -1,11 +1,11 @@
 'use client';
-import { ClipLoader, ClimbingBoxLoader } from 'react-spinners';
+import { ClipLoader, PulseLoader } from 'react-spinners';
 
 const ScreenSpinner = ({ mutate }: { mutate: boolean }) => {
   return (
-    <div className='flex min-h-screen items-center justify-center fixed inset-0 backdrop-blur-[3px] z-50'>
+    <div className='fixed inset-0 flex items-center justify-center backdrop-blur-xs z-50'>
       {mutate ? (
-        <ClimbingBoxLoader color='#0c65eb' size={35} />
+        <PulseLoader color='#141ce6' size={30} margin={10} />
       ) : (
         <ClipLoader
           color='#0c65eb'

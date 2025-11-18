@@ -33,7 +33,7 @@ const RegisterForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
       password: '',
       confirmPassword: '',
     },
-    mode: 'all',
+    mode: 'onSubmit',
   });
 
   const onSubmit = async (values: RegisterUserForm) => {

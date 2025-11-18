@@ -22,7 +22,7 @@ export const registerSchema = z
     confirmPassword: z.string({ error: 'Invalid password confirmation' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    error: 'Passwords do not match',
+    error: "Passwords don't match",
     path: ['confirmPassword'],
   });
 
@@ -52,7 +52,7 @@ export const resetPassSchema = z
     confirmPassword: z.string({ error: 'Invalid password confirmation' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    error: 'Passwords do not match',
+    error: "Passwords don't match",
     path: ['confirmPassword'],
   });
 

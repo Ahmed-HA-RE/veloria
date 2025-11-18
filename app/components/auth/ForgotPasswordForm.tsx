@@ -25,7 +25,7 @@ const ForgotPasswordForm = () => {
     defaultValues: {
       email: '',
     },
-    mode: 'all',
+    mode: 'onSubmit',
   });
 
   const onSubmit = async (data: z.infer<typeof forgotPassSchema>) => {

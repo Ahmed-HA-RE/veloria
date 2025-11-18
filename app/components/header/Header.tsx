@@ -1,8 +1,5 @@
-'use client';
-import { useId, useState } from 'react';
 import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
 import UserMenu from '@/app/components/header/user-menu';
-import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import Theme from './Theme';
 import { Avatar, AvatarFallback } from '../ui/avatar';
@@ -11,14 +8,20 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CategorySheet from './CategorySheet';
 import { auth } from '@/lib/auth';
+import prisma from '@/lib/prisma';
+import { headers } from 'next/headers';
 
-const Header = ({
-  session,
-}: {
-  session: typeof auth.$Infer.Session | null;
-}) => {
-  const id = useId();
-  const [openSheet, setOpenSheet] = useState(false);
+const Header = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const [menDressShirtsCount, menSweatShirtsCount, menSneakersCount] =
+    await Promise.all([
+      prisma.product.count({ where: { category: "Men's Dress Shirts" } }),
+      prisma.product.count({ where: { category: "Men's Sweatshirts" } }),
+      prisma.product.count({ where: { category: "Men's Sneakers" } }),
+    ]);
 
   return (
     <header className='border-b dark:dark-border-color py-3'>
@@ -26,39 +29,12 @@ const Header = ({
         <div className='flex h-16 items-center justify-between gap-2'>
           {/* Left side */}
           <div className='flex flex-1/3 md:flex-1/2 items-center gap-1'>
-            {/* Sheet trigger */}
-            <Button
-              className='group size-8 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-100/20 dark:hover:text-white transition'
-              variant='ghost'
-              size={'icon'}
-              onClick={() => setOpenSheet(!openSheet)}
-            >
-              <svg
-                className='pointer-events-none'
-                width={16}
-                height={16}
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M4 12L20 12'
-                  className='origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]'
-                />
-                <path
-                  d='M4 12H20'
-                  className='origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45'
-                />
-                <path
-                  d='M4 12H20'
-                  className='origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]'
-                />
-              </svg>
-            </Button>
+            {/* Category Sheet */}
+            <CategorySheet
+              menDressShirtsCount={menDressShirtsCount}
+              menSweatShirtsCount={menSweatShirtsCount}
+              menSneakersCount={menSneakersCount}
+            />
 
             <div className='flex items-center gap-6'>
               <Link
@@ -81,7 +57,6 @@ const Header = ({
           {/* Middle area */}
           <div className='relative flex flex-row items-center justify-center gap-2 flex-1/2 md:flex-1/3'>
             <Input
-              id={id}
               className='peer h-8 ps-8 pe-2 focus-visible:border-blue-400 focus-visible:ring-blue-400 dark:focus-visible:border-blue-500 dark:focus-visible:ring-blue-500 dark:border-white dark:text-white dark:placeholder:text-gray-50/70'
               placeholder='Search...'
               type='search'
@@ -91,9 +66,6 @@ const Header = ({
               <SearchIcon size={16} />
             </div>
           </div>
-
-          {/* Category Sheet */}
-          <CategorySheet openSheet={openSheet} setOpenSheet={setOpenSheet} />
 
           {/* Right side */}
           <div className='flex flex-1/2 items-center justify-end gap-2 md:gap-4'>

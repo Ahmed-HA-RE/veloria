@@ -37,7 +37,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
       password: '',
       rememberMe: false,
     },
-    mode: 'all',
+    mode: 'onSubmit',
   });
 
   const onSubmit = async (values: SignInUserForm) => {
