@@ -14,7 +14,8 @@ const calcPrices = (items: CartItem[]) => {
     items.reduce((acc, item) => acc + Number(item.price) * item.qty, 0)
   );
   // add 10 AED shipping fee for orders below 100 AED
-  const shippingPrice = itemsPrice < 100 ? 10 : 0;
+  const shippingPrice =
+    items.length > 0 ? roundToTwoDecimals(itemsPrice < 100 ? 10 : 0) : 0;
   const taxPrice = roundToTwoDecimals(itemsPrice * 0.05); // 5% tax
   const totalPrice = roundToTwoDecimals(itemsPrice + shippingPrice + taxPrice);
 
@@ -148,7 +149,7 @@ export const removeItemFromCart = async (productId: string) => {
     (item) => item.productId === productId
   );
 
-  if (!exist) throw new Error('Item not found in cart');
+  if (!exist) throw new Error('Item was not found in cart');
 
   if (exist.qty === 1) {
     cart.items = (cart.items as CartItem[]).filter(
@@ -174,5 +175,8 @@ export const removeItemFromCart = async (productId: string) => {
     },
   });
   revalidatePath(`/product/${exist.productId}`);
-  return { success: true, message: `${exist.name} removed from cart` };
+  return {
+    success: true,
+    message: `${exist.name} removed from cart`,
+  };
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Mail, XIcon } from 'lucide-react';
 
 import { Button } from '@/app/components/ui/button';
@@ -16,23 +16,22 @@ const VerifyEmailBanner = ({
   session: typeof auth.$Infer.Session;
 }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   if (!isVisible) return null;
 
   const handleSendEmailVerification = async () => {
-    setIsPending(true);
-    const result = await sendEmailVerificationOTP(session.user.email);
-    if (result?.success) {
-      setIsPending(false);
-      successToast(result.message);
-      setTimeout(() => router.push('/verify-email'), 2000);
-    } else {
-      destructiveToast(result?.message);
-      setIsPending(false);
-      return;
-    }
+    startTransition(async () => {
+      const result = await sendEmailVerificationOTP(session.user.email);
+      if (result?.success) {
+        successToast(result.message);
+        setTimeout(() => router.push('/verify-email'), 2000);
+      } else {
+        destructiveToast(result?.message);
+        return;
+      }
+    });
   };
 
   return (

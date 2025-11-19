@@ -15,13 +15,13 @@ import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type RegisterUserForm, registerSchema } from '@/schema/userSchema';
-import { useState } from 'react';
+import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { registerUser } from '@/app/actions/auth';
 
 const RegisterForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const callbackUrl = useSearchParams().get('callbackUrl') || '/';
 
@@ -37,18 +37,17 @@ const RegisterForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   });
 
   const onSubmit = async (values: RegisterUserForm) => {
-    setIsPending(true);
-    const result = await registerUser(values);
+    startTransition(async () => {
+      const result = await registerUser(values);
 
-    if (result && !result.success) {
-      destructiveToast(result.message);
-      setIsPending(false);
-      return;
-    } else {
-      setIsPending(false);
-      successToast(result?.message);
-      setTimeout(() => router.push(callbackUrl), 1500);
-    }
+      if (result && !result.success) {
+        destructiveToast(result.message);
+        return;
+      } else {
+        successToast(result?.message);
+        setTimeout(() => router.push(callbackUrl), 1500);
+      }
+    });
   };
 
   return (

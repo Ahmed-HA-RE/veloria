@@ -15,7 +15,7 @@ import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ResetPassword, resetPassSchema } from '@/schema/userSchema';
-import { useState } from 'react';
+import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter } from 'next/navigation';
 import { ChevronLeftIcon } from 'lucide-react';
@@ -26,7 +26,7 @@ const ResetPasswordForm = ({
   className,
   ...props
 }: React.ComponentProps<'div'>) => {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const token = useSearchParams().get('token');
 
@@ -45,21 +45,18 @@ const ResetPasswordForm = ({
   }
 
   const onSubmit = async (values: ResetPassword) => {
-    setIsPending(true);
-
-    const { error } = await authClient.resetPassword({
-      newPassword: values.password,
-      token,
+    startTransition(async () => {
+      const { error } = await authClient.resetPassword({
+        newPassword: values.password,
+        token,
+      });
+      if (error) {
+        destructiveToast(error.message);
+        return;
+      } else {
+        router.push('/verification?status=true');
+      }
     });
-
-    if (error) {
-      destructiveToast(error.message);
-      setIsPending(false);
-      return;
-    } else {
-      setIsPending(false);
-      router.push('/verification?status=true');
-    }
   };
 
   return (

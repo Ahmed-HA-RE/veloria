@@ -6,7 +6,7 @@ import { Field, FieldError, FieldLabel } from '../ui/field';
 import z from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { requestResetPassowrd } from '@/app/actions/auth';
 import { destructiveToast, successToast } from '@/lib/utils';
@@ -17,7 +17,7 @@ const forgotPassSchema = z.object({
 });
 
 const ForgotPasswordForm = () => {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof forgotPassSchema>>({
@@ -29,18 +29,17 @@ const ForgotPasswordForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof forgotPassSchema>) => {
-    setIsPending(true);
-    const result = await requestResetPassowrd(data.email);
+    startTransition(async () => {
+      const result = await requestResetPassowrd(data.email);
 
-    if (!result?.success) {
-      setIsPending(false);
-      destructiveToast(result?.message);
-      return;
-    }
+      if (!result?.success) {
+        destructiveToast(result?.message);
+        return;
+      }
 
-    successToast(result.message);
-    setTimeout(() => router.push('/signin'), 2000);
-    setIsPending(false);
+      successToast(result.message);
+      setTimeout(() => router.push('/signin'), 2000);
+    });
   };
 
   return (

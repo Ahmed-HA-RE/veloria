@@ -10,52 +10,82 @@ import {
 } from '@/app/components/ui/drawer';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { ArrowLeft, CheckCircleIcon, Plus } from 'lucide-react';
-import { Product } from '@/types';
-import { useState } from 'react';
+import {
+  ArrowLeft,
+  CheckCircleIcon,
+  Plus,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from 'lucide-react';
+import { Cart, Product } from '@/types';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
-import { destructiveToast } from '@/lib/utils';
+import { destructiveToast, successToast } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '../ui/spinner';
-import { addItemToCart } from '../../actions/cart';
+import { addItemToCart, removeItemFromCart } from '../../actions/cart';
+import { Separator } from '../ui/separator';
 
-const ActionDrawer = ({ product }: { product: Product }) => {
+type ActionDrawerProps = {
+  product: Product;
+  cart: Cart | undefined;
+};
+
+const ActionDrawer = ({ product, cart }: ActionDrawerProps) => {
   const isMobile = useIsMatchMedia('(max-width: 768px)');
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+  // const [isPending, setIsPending] = useState(false);
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const matchedProductInCart = cart?.items.find(
+    (item) => item.productId === product.id
+  );
+
+  const showQuantityButtons =
+    matchedProductInCart && matchedProductInCart?.qty >= 1;
 
   const handleAddToCart = async () => {
-    try {
-      setIsPending(true);
-      const res = await addItemToCart({
-        image: product.images[0],
-        productId: product.id,
-        qty: 1,
-        price: product.price,
-        name: product.name,
-        slug: product.slug,
-      });
+    startTransition(async () => {
+      try {
+        const res = await addItemToCart({
+          image: product.images[0],
+          productId: product.id,
+          qty: 1,
+          price: product.price,
+          name: product.name,
+          slug: product.slug,
+        });
 
-      toast(res?.message, {
-        action: {
-          label: 'Go to cart',
-          onClick: () => {
-            router.push('/cart');
+        toast(res?.message, {
+          action: {
+            label: 'Go to cart',
+            onClick: () => {
+              router.push('/cart');
+            },
           },
-        },
-        position: 'top-left',
-        classNames: {
-          toast: '!w-[468px]',
-          actionButton: '!font-bold !text-sm !py-4 !px-4',
-        },
-      });
-    } catch (error: any) {
-      destructiveToast(error.message);
-    } finally {
-      setIsPending(false);
-    }
+          position: 'top-left',
+          classNames: {
+            toast: '!w-[468px]',
+            actionButton: '!font-bold !text-sm !py-4 !px-4',
+          },
+        });
+      } catch (error: any) {
+        destructiveToast(error.message);
+      }
+    });
+  };
+
+  const handleRemoveFromCart = async () => {
+    startTransition(async () => {
+      try {
+        const res = await removeItemFromCart(product.id);
+        successToast(res?.message);
+      } catch (error: any) {
+        destructiveToast(error.message);
+      }
+    });
   };
 
   return (
@@ -96,7 +126,8 @@ const ActionDrawer = ({ product }: { product: Product }) => {
                 <p>{product.price}</p>
               </div>
             </div>
-            {/* Status */}
+            <Separator className='bg-gray-300 my-1' />
+            {/* Stock */}
             <div className='flex flex-row justify-between items-center '>
               <p className='font-semibold'>Stock</p>
               {product.stock > 0 ? (
@@ -113,23 +144,68 @@ const ActionDrawer = ({ product }: { product: Product }) => {
                 </Badge>
               )}
             </div>
+            {/* if there is already an item in cart */}
+            {showQuantityButtons && (
+              <>
+                <Separator className='bg-gray-300 my-1' />
+                {/* Quantity in cart */}
+                <div className='flex flex-row justify-between items-center '>
+                  <p className='font-semibold'>In Your Cart</p>
+                  <div className='inline-flex -space-x-px rounded-md shadow-xs rtl:space-x-reverse'>
+                    <Button
+                      className='rounded-none shadow-none first:rounded-s-md last:rounded-e-md focus-visible:z-10'
+                      variant='outline'
+                      size='icon'
+                      aria-label='Upvote'
+                      onClick={handleAddToCart}
+                      disabled={isPending}
+                    >
+                      {isPending ? (
+                        <Spinner className='size-4 ' />
+                      ) : (
+                        <ChevronUpIcon size={16} aria-hidden='true' />
+                      )}
+                    </Button>
+                    <span className='flex items-center border border-input px-3 text-sm font-medium'>
+                      {matchedProductInCart?.qty}
+                    </span>
+                    <Button
+                      className='rounded-none shadow-none first:rounded-s-md last:rounded-e-md focus-visible:z-10'
+                      variant='outline'
+                      size='icon'
+                      aria-label='Downvote'
+                      onClick={handleRemoveFromCart}
+                      disabled={isPending}
+                    >
+                      {isPending ? (
+                        <Spinner className='size-4 ' />
+                      ) : (
+                        <ChevronDownIcon size={16} aria-hidden='true' />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           <DrawerFooter className='gap-3'>
-            <Button
-              disabled={product.stock === 0 || isPending}
-              className='w-full bg-gray-800 hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200'
-              onClick={handleAddToCart}
-            >
-              {product.stock === 0 ? (
-                'Out Of Stock'
-              ) : isPending ? (
-                <Spinner className='size-7' />
-              ) : (
-                <>
-                  <Plus /> Add to Cart
-                </>
-              )}
-            </Button>
+            {!showQuantityButtons && (
+              <Button
+                disabled={product.stock === 0 || isPending}
+                className='w-full bg-gray-800 hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200'
+                onClick={handleAddToCart}
+              >
+                {product.stock === 0 ? (
+                  'Out Of Stock'
+                ) : isPending ? (
+                  <Spinner className='size-7' />
+                ) : (
+                  <>
+                    <Plus /> Add to Cart
+                  </>
+                )}
+              </Button>
+            )}
             <Button
               onClick={() => setOpenDrawer(false)}
               className='bg-gray-800 hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200'

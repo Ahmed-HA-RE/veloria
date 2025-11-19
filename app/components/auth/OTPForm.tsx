@@ -15,7 +15,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/app/components/ui/input-otp';
-import { useState } from 'react';
+import { useTransition } from 'react';
 import { sendEmailVerificationOTP, verifyEmail } from '@/app/actions/auth';
 import { auth } from '@/lib/auth';
 import ScreenSpinner from '../ScreenSpinner';
@@ -29,18 +29,15 @@ const otpSchema = z.object({
 });
 
 const OTPForm = ({ session }: { session: typeof auth.$Infer.Session }) => {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const handleSendEmailVerification = async () => {
-    setIsPending(true);
     const result = await sendEmailVerificationOTP(session.user.email);
     if (result?.success) {
-      setIsPending(false);
       successToast(result.message);
     } else {
       destructiveToast(result?.message);
-      setIsPending(false);
       return;
     }
   };
@@ -54,17 +51,16 @@ const OTPForm = ({ session }: { session: typeof auth.$Infer.Session }) => {
   });
 
   const onSubmit = async (data: z.infer<typeof otpSchema>) => {
-    setIsPending(true);
-    const result = await verifyEmail(session.user.email, data.otp);
-    if (result?.success) {
-      setIsPending(false);
-      successToast(result.message);
-      setTimeout(() => router.push('/'), 2000);
-    } else {
-      destructiveToast(result?.message);
-      setIsPending(false);
-      return;
-    }
+    startTransition(async () => {
+      const result = await verifyEmail(session.user.email, data.otp);
+      if (result?.success) {
+        successToast(result.message);
+        setTimeout(() => router.push('/'), 2000);
+      } else {
+        destructiveToast(result?.message);
+        return;
+      }
+    });
   };
 
   return (

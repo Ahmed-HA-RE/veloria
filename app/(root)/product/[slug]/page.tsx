@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import ActionDrawer from '@/app/components/products/ActionDrawer';
 import { convertToPlainObject } from '@/lib/utils';
 import ProductImages from '@/app/components/products/ProductImages';
+import { getMyCart } from '@/app/actions/cart';
 
 const ProductDetailsPage = async ({
   params,
@@ -12,10 +13,11 @@ const ProductDetailsPage = async ({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return notFound();
+  const cart = await getMyCart();
 
   return (
     <section>
-      <ActionDrawer product={convertToPlainObject(product)} />
+      <ActionDrawer product={convertToPlainObject(product)} cart={cart} />
       <div className='flex flex-col md:flex-row  md:items-start gap-6 mt-4'>
         {/* Image */}
         <div className='flex-1/3 mx-auto w-full'>

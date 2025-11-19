@@ -18,7 +18,7 @@ import { MdAdminPanelSettings } from 'react-icons/md';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { signOutUser } from '@/app/actions/auth';
-import { Suspense, useState } from 'react';
+import { Suspense, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import ScreenSpinner from '../ScreenSpinner';
 import Image from 'next/image';
@@ -28,7 +28,7 @@ const UserMenu = ({
 }: {
   session: typeof auth.$Infer.Session | null;
 }) => {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const adminLinks =
     session && session.user.role === 'admin'
@@ -57,14 +57,13 @@ const UserMenu = ({
   const userMenuLinks = [...baseLinks, ...adminLinks];
 
   const handleSignOut = async () => {
-    setIsPending(true);
-    const result = await signOutUser();
+    startTransition(async () => {
+      const result = await signOutUser();
 
-    if (result.success) {
-      router.push('/signin');
-      setIsPending(false);
-    }
-    setIsPending(false);
+      if (result.success) {
+        router.push('/signin');
+      }
+    });
   };
 
   return (

@@ -20,14 +20,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { type SignInUserForm, signInSchema } from '@/schema/userSchema';
-import { useState } from 'react';
+import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Checkbox } from '../ui/checkbox';
 import { signInUser, singInSocials } from '@/app/actions/auth';
 
 const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const callbackUrl = useSearchParams().get('callbackUrl') || '/';
 
@@ -42,18 +42,17 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   });
 
   const onSubmit = async (values: SignInUserForm) => {
-    setIsPending(true);
-    const result = await signInUser(values);
+    startTransition(async () => {
+      const result = await signInUser(values);
 
-    if (result && !result.success && result.message) {
-      destructiveToast(result.message);
-      setIsPending(false);
-      return;
-    } else {
-      setIsPending(false);
-      successToast('Sign in successful! Redirecting...');
-      setTimeout(() => router.push(callbackUrl), 1500);
-    }
+      if (result && !result.success && result.message) {
+        destructiveToast(result.message);
+        return;
+      } else {
+        successToast('Sign in successful! Redirecting...');
+        setTimeout(() => router.push(callbackUrl), 1500);
+      }
+    });
   };
 
   const handleSocialSignIn = async (provider: 'google' | 'github') => {
@@ -163,7 +162,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 <FieldSeparator>Or continue with</FieldSeparator>
                 <Field className='grid grid-cols-2 gap-4'>
                   <Button
-                    className="hover:bg-gray-100 border-black/50  [&_svg:not([class*='size-'])]:size-6"
+                    className="hover:bg-gray-300 border-black/50  [&_svg:not([class*='size-'])]:size-6 bg-white"
                     variant='outline'
                     aria-label='Login with Github'
                     onClick={() => handleSocialSignIn('github')}
@@ -172,7 +171,7 @@ const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
                     <FaGithub className='text-black' aria-hidden='true' />
                   </Button>
                   <Button
-                    className="hover:bg-[#DB4437]/90 border-black/50 hover:border-none [&_svg:not([class*='size-'])]:size-6"
+                    className="hover:bg-[#DB4437]/90 border-black/50 hover:border-none [&_svg:not([class*='size-'])]:size-6 bg-white"
                     variant='outline'
                     aria-label='Login with Google'
                     type='button'
