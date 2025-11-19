@@ -37,7 +37,7 @@ export const registerUser = async (values: RegisterUserForm) => {
     };
   } catch (error) {
     if (error instanceof APIError) {
-      return { success: false, message: error.message };
+      throw new Error(error.body?.message);
     }
   }
 };

@@ -39,6 +39,18 @@ export const proxy = async (req: NextRequest) => {
       new URL('/verification?status=false', req.url)
     );
   }
+
+  // Storing cartId in cookies
+  if (!req.cookies.get('sessionCartId')) {
+    // generate a unique cartId
+    const sessionCartId = crypto.randomUUID();
+    const res = NextResponse.next();
+    res.cookies.set('sessionCartId', sessionCartId, {
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
+
+    return res;
+  }
 };
 export const config = {
   matcher: [
@@ -47,5 +59,6 @@ export const config = {
     '/verify-email',
     '/forgot-password',
     '/reset-password',
+    '/((?!api|_next/static|_next/image|.*\\.png$).*)',
   ],
 };

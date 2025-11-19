@@ -34,7 +34,7 @@ model Product {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String    @id
   name          String
   email         String
   emailVerified Boolean   @default(false)
@@ -53,7 +53,7 @@ model User {
 }
 
 model Session {
-  id        String   @id @default(uuid())
+  id        String   @id
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
@@ -68,7 +68,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id @default(uuid())
+  id                    String    @id
   accountId             String
   providerId            String
   userId                String
@@ -87,7 +87,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id @default(uuid())
+  id         String   @id
   identifier String
   value      String
   expiresAt  DateTime
@@ -99,6 +99,7 @@ model Verification {
 
 model Cart {
   id            String   @id @default(uuid())
+  sessionCartId String?  @unique @db.Uuid
   items         Json[]   @db.Json
   itemsPrice    Decimal  @db.Decimal(10, 2)
   shippingPrice Decimal  @db.Decimal(10, 2)

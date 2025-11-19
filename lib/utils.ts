@@ -51,7 +51,11 @@ export const moneyAmountString = () => {
     .regex(/^(0|[1-9]\d*)\.\d{2}$/, {
       message: 'Must be a number with exactly 2 decimal places',
     })
-    .refine((val) => Number.parseFloat(val) > 0, {
+    .refine((val) => Number.parseFloat(val) >= 0, {
       message: 'Money amount must be greater than 0',
     });
+};
+
+export const roundToTwoDecimals = (num: number) => {
+  return Math.round((num + Number.EPSILON) * 100) / 100;
 };

@@ -18,7 +18,7 @@ import { destructiveToast } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '../ui/spinner';
-import { addToCart } from '../../actions/cart';
+import { addItemToCart } from '../../actions/cart';
 
 const ActionDrawer = ({ product }: { product: Product }) => {
   const isMobile = useIsMatchMedia('(max-width: 768px)');
@@ -27,35 +27,34 @@ const ActionDrawer = ({ product }: { product: Product }) => {
   const router = useRouter();
 
   const handleAddToCart = async () => {
-    setIsPending(true);
-    const res = await addToCart({
-      image: product.images[0],
-      productId: product.id,
-      qty: 1,
-      price: product.price,
-      name: product.name,
-      slug: product.slug,
-    });
+    try {
+      setIsPending(true);
+      const res = await addItemToCart({
+        image: product.images[0],
+        productId: product.id,
+        qty: 1,
+        price: product.price,
+        name: product.name,
+        slug: product.slug,
+      });
 
-    if (res && !res.success) {
-      destructiveToast(res.message);
-      setIsPending(false);
-      return;
-    }
-
-    toast(res?.message, {
-      action: {
-        label: 'Go to cart',
-        onClick: () => {
-          router.push('/cart');
+      toast(res?.message, {
+        action: {
+          label: 'Go to cart',
+          onClick: () => {
+            router.push('/cart');
+          },
         },
-      },
-      position: 'top-left',
-      classNames: {
-        toast: '!w-[468px]',
-      },
-    });
-    setIsPending(false);
+        position: 'top-left',
+        classNames: {
+          toast: '!w-[468px]',
+        },
+      });
+    } catch (error: any) {
+      destructiveToast(error.message);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (

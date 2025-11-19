@@ -11,8 +11,8 @@ export const cartItemSchema = z.object({
 });
 
 export const cartSchema = z.object({
-  id: z.uuid({ message: 'Invalid cart ID' }),
-  userId: z.uuid({ message: 'Invalid user ID' }).optional(),
+  sessionCartId: z.uuid({ message: 'Invalid session cart ID' }).optional(),
+  userId: z.string({ message: 'Invalid user ID' }).optional(),
   items: z.array(cartItemSchema),
   itemsPrice: moneyAmountString(),
   shippingPrice: moneyAmountString(),
