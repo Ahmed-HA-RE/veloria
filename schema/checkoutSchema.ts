@@ -1,3 +1,4 @@
+import { PAYMENT_METHODS } from '@/lib/constants/index';
 import z from 'zod';
 
 export const shippingSchema = z.object({
@@ -28,4 +29,10 @@ export const shippingSchema = z.object({
     .min(5, 'Street Address must be at least 5 characters long')
     .max(100, 'Street Address must be at most 100 characters long')
     .trim(),
+});
+
+export const paymentMethodSchema = z.object({
+  paymentMethod: z.enum(PAYMENT_METHODS.split(', '), {
+    error: 'Payment Method is required',
+  }),
 });

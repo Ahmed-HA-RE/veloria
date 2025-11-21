@@ -13,8 +13,9 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import prisma from '@/lib/prisma';
-import { Shipping } from '@/types';
-import { shippingSchema } from '@/schema/shippingSchema';
+import { Shipping, PaymentMethod } from '@/types';
+import { shippingSchema } from '@/schema/checkoutSchema';
+import { paymentMethodSchema } from '@/schema/checkoutSchema';
 
 export const registerUser = async (values: RegisterUserForm) => {
   try {
@@ -81,7 +82,6 @@ export const signOutUser = async () => {
   });
 
   // reset the sessionCartId cookie
-
   (await cookies()).delete('sessionCartId');
 
   return result;
@@ -187,17 +187,46 @@ export const updateUserAddress = async (data: Shipping) => {
       headers: await headers(),
     });
 
-    if (!session) throw new Error('User not found');
+    const user = await prisma.user.findFirst({
+      where: { id: session?.user.id },
+    });
+
+    if (!user) throw new Error('User not found');
 
     const validatedAddress = shippingSchema.safeParse(data);
 
     if (validatedAddress.success) {
       await prisma.user.update({
-        where: { id: session.user.id },
+        where: { id: user.id },
         data: { address: validatedAddress.data },
       });
       return { success: true, message: 'Address updated successfully' };
     }
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
+
+export const updateUserPayment = async (paymentType: string) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    const user = await prisma.user.findFirst({
+      where: { id: session?.user.id },
+    });
+
+    if (!user) throw new Error('User not found');
+
+    const validatedPayment = paymentMethodSchema.safeParse(paymentType);
+
+    if (!validatedPayment.success) throw new Error('Invalid payment method');
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { paymentMethod: validatedPayment.data.paymentMethod },
+    });
   } catch (error) {
     throw new Error((error as Error).message);
   }

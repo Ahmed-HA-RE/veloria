@@ -3,7 +3,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ScreenSpinner from './ScreenSpinner';
-import { shippingSchema } from '@/schema/shippingSchema';
+import { shippingSchema } from '@/schema/checkoutSchema';
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shipping } from '@/types';
