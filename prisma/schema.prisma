@@ -126,9 +126,9 @@ model Order {
   taxPrice        Decimal      @db.Decimal(10, 2)
   totalPrice      Decimal      @db.Decimal(10, 2)
   isPaid          Boolean      @default(false)
-  paidAt          DateTime     @default(now())
+  paidAt          DateTime?
   isDelivered     Boolean      @default(false)
-  deliveredAt     DateTime     @default(now())
+  deliveredAt     DateTime?
   createdAt       DateTime     @default(now())
 }
 
