@@ -8,6 +8,7 @@ import { headers } from 'next/headers';
 import prisma from '@/lib/prisma';
 import { convertToPlainObject } from '@/lib/utils';
 import { Shipping } from '@/types';
+import { paypal } from '@/lib/paypal';
 
 export const createOrder = async () => {
   try {
@@ -93,4 +94,20 @@ export const getOrderById = async (orderId: string) => {
     ...order,
     shippingAddress: order.shippingAddress as Shipping,
   });
+};
+
+export const createOrderPayment = async (orderId: string) => {
+  try {
+    const order = await prisma.order.findFirst({
+      where: { id: orderId },
+    });
+
+    if (!order) throw new Error('No Order Found');
+
+    const paypalOrder = await paypal.createOrder(Number(order.totalPrice));
+
+    return paypalOrder;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
 };
