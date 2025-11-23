@@ -41,7 +41,7 @@ const UserHeader = async () => {
                   height={45}
                   loading='eager'
                 />
-                <h4 className=' font-bold text-2xl pt-1'>{APP_NAME}</h4>
+                <h4 className='font-bold text-2xl pt-1'>{APP_NAME}</h4>
               </Link>
             </div>
           </div>

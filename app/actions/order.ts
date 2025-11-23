@@ -183,3 +183,31 @@ export const confirmOrderPayment = async (
     throw new Error((error as Error).message);
   }
 };
+
+export const getMyOrders = async (page: number, limit: number = 2) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) throw new Error('User is not authenticated');
+
+    const orders = await prisma.order.findMany({
+      where: { userId: session.user.id },
+      take: limit,
+      skip: (page - 1) * limit,
+      orderBy: { createdAt: 'desc' },
+    });
+    const totalUserOrders = await prisma.order.count({
+      where: { userId: session.user.id },
+    });
+
+    return {
+      success: true,
+      orders,
+      totalPages: Math.ceil(totalUserOrders / limit),
+    };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};
