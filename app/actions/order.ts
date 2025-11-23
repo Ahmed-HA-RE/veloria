@@ -127,7 +127,7 @@ export const createOrderPayment = async (orderId: string) => {
 
 export const confirmOrderPayment = async (
   orderId: string,
-  paymentResult: PaymentResults
+  data: { orderID: string }
 ) => {
   try {
     const order = await prisma.order.findFirst({
@@ -137,7 +137,7 @@ export const confirmOrderPayment = async (
 
     if (!order) throw new Error('No Order Found');
 
-    const capturePayPalPayment = await paypal.capturePayment(paymentResult.id);
+    const capturePayPalPayment = await paypal.capturePayment(data.orderID);
 
     if (!capturePayPalPayment || capturePayPalPayment.status !== 'COMPLETED') {
       throw new Error('Something went wrong with the payment process');
@@ -177,6 +177,7 @@ export const confirmOrderPayment = async (
       message: 'Payment completed successfully. Thank you for your purchase!',
     };
   } catch (error) {
+    console.log(error);
     throw new Error((error as Error).message);
   }
 };

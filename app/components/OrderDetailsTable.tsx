@@ -18,11 +18,48 @@ import {
 import Image from 'next/image';
 import { Separator } from '@/app/components/ui/separator';
 import { Order } from '@/types';
-import { formatDateTime, formatId } from '@/lib/utils';
+import {
+  destructiveToast,
+  formatDateTime,
+  formatId,
+  successToast,
+} from '@/lib/utils';
 import { Badge } from './ui/badge';
-import { createOrderPayment } from '../actions/order';
+import { createOrderPayment, confirmOrderPayment } from '../actions/order';
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  usePayPalScriptReducer,
+} from '@paypal/react-paypal-js';
+import ScreenSpinner from './ScreenSpinner';
 
-const OrderDetailsTable = ({ order }: { order: Order }) => {
+const OrderDetailsTable = ({
+  order,
+  paypalClientId,
+}: {
+  order: Order;
+  paypalClientId: string;
+}) => {
+  const PayPalLoadingScreen = () => {
+    const [{ isPending }] = usePayPalScriptReducer();
+    return isPending ? <div>Loading...</div> : null;
+  };
+
+  const handleCreateOrder = async () => {
+    const res = await createOrderPayment(order.id);
+    return res.id;
+  };
+
+  const handleApproveOrder = async (data: { orderID: string }) => {
+    const res = await confirmOrderPayment(order.id, data);
+
+    if (!res.success) {
+      destructiveToast(res.message);
+    } else {
+      successToast(res.message);
+    }
+  };
+
   return (
     <section className='mt-4'>
       <h1 className='text-3xl font-bold mb-4'>Order {formatId(order.id)}</h1>
@@ -139,6 +176,7 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
                             width={40}
                             height={40}
                             alt={item.name}
+                            loading='eager'
                           />
                           <div className='font-medium truncate'>
                             {item.name}
@@ -163,7 +201,7 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
         </div>
         {/* Right Col */}
         <div className='md:col-span-2 order-1 md:order-2'>
-          <Card className='dark:dark-border-color gap-6'>
+          <Card className='dark:dark-border-color gap-6 pb-3'>
             <CardContent className='md:px-3 '>
               {/* Items Before Tax and Shipping */}
               <div className='flex flex-row justify-between items-center'>
@@ -201,6 +239,25 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
                 </div>
               </div>
             </CardContent>
+            {/* Payment Buttons */}
+            {order.paymentMethod === 'PayPal' && !order.isPaid && (
+              <CardFooter className='px-6 md:px-3  w-full block'>
+                {/* PayPal */}
+                <PayPalScriptProvider
+                  options={{
+                    clientId: paypalClientId,
+                    disableFunding: 'credit,card',
+                  }}
+                >
+                  <PayPalLoadingScreen />
+                  <PayPalButtons
+                    style={{ color: 'blue' }}
+                    createOrder={handleCreateOrder}
+                    onApprove={handleApproveOrder}
+                  />
+                </PayPalScriptProvider>
+              </CardFooter>
+            )}
           </Card>
         </div>
       </div>

@@ -36,7 +36,9 @@ export const paypal = {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
-    return response.data;
+    if (response.data) {
+      return response.data;
+    }
   },
 };
 
