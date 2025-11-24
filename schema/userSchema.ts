@@ -57,3 +57,25 @@ export const resetPassSchema = z
   });
 
 export type ResetPassword = z.infer<typeof resetPassSchema>;
+
+export const updateProfileSchema = z.object({
+  name: registerSchema.shape.name,
+  email: registerSchema.shape.email,
+  address: z.object({
+    city: z.enum([
+      '',
+      'Abu Dhabi',
+      'Dubai',
+      'Sharjah',
+      'Ajman',
+      'Umm Al Quwain',
+      'Ras Al Khaimah',
+      'Fujairah',
+    ]),
+    phoneNumber: z.string().optional(),
+    streetAddress: z.string().optional(),
+    image: z.string().optional(),
+  }),
+});
+
+export type UpdateProfile = z.infer<typeof updateProfileSchema>;

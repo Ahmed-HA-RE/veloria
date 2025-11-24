@@ -22,7 +22,6 @@ import { PhoneInput } from '../ui/phone-number-input';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { updateUserAddress } from '../../actions/auth';
-import { usePathname } from 'next/navigation';
 
 const ShippingAddressForm = ({ userAddress }: { userAddress: Shipping }) => {
   const [isPending, startTransition] = useTransition();
