@@ -8,6 +8,7 @@ import BayroEmailVerification from '@/emails/VerifyEmail';
 import BayroResetPassword from '@/emails/ResetPassword';
 import { APP_NAME } from '@/lib/constants';
 import { createAuthMiddleware } from 'better-auth/api';
+import { fa } from 'zod/v4/locales';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -30,17 +31,15 @@ export const auth = betterAuth({
         type: 'string',
         input: false,
       },
+      bio: {
+        type: 'string',
+        input: false,
+      },
     },
   },
 
   session: {
     expiresIn: 60 * 60 * 24 * 30, // 30 days
-  },
-
-  account: {
-    accountLinking: {
-      updateUserInfoOnLink: true,
-    },
   },
 
   emailAndPassword: {

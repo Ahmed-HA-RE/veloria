@@ -5,8 +5,15 @@ import { Shipping } from '@/types';
 import UserContactForm from '@/app/components/user/ContactInfoForm';
 import UserPublicInfoForm from '@/app/components/user/PublicInfoForm';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
-import { CircleAlertIcon } from 'lucide-react';
+import { CircleAlertIcon, TriangleAlertIcon } from 'lucide-react';
 import UserChangePassForm from '@/app/components/user/ChangePassForm';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Profile',
+  description: 'View and manage your profile.',
+};
 
 const UserProfilePage = async () => {
   const session = await auth.api.getSession({
@@ -26,7 +33,7 @@ const UserProfilePage = async () => {
 
   return (
     <section className='mt-4'>
-      <h1 className='text-2xl md:text-3xl font-bold mb-14 md:mb-20'>
+      <h1 className='text-2xl md:text-3xl font-bold mb-10 md:text-left md:mb-20'>
         Account Information
       </h1>
       {/* User Public information */}
@@ -38,9 +45,21 @@ const UserProfilePage = async () => {
             and a short bio. All information here will be viewed for other
             users.
           </p>
+          {!user.emailVerified && (
+            <Alert className='bg-destructive dark:bg-destructive/60 border-none text-white'>
+              <TriangleAlertIcon />
+              <AlertTitle className='line-clamp-none'>
+                You need to verify your email address in order to change your
+                current email address.
+              </AlertTitle>
+            </Alert>
+          )}
         </div>
         {/* Public Information Form */}
-        <UserPublicInfoForm userContact={user} />
+        <UserPublicInfoForm
+          user={session.user}
+          providerId={loggedInWithCredential[0]?.providerId}
+        />
       </div>
 
       {/* User Contact information */}

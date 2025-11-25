@@ -65,6 +65,7 @@ export const updateUserPubInfoSchema = z.object({
     .max(160, 'Bio must be at most 160 characters long')
     .optional()
     .nullable(),
+  email: registerSchema.shape.email,
 });
 
 export const updateUserPassSchema = z

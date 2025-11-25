@@ -13,6 +13,12 @@ import {
 import { convertToNumber, formatDateTime, formatId } from '@/lib/utils';
 import { Button } from '@/app/components/ui/button';
 import PaginationControls from '@/app/components/Pagination';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Orders',
+  description: 'View and manage your orders.',
+};
 
 const UserOrdersPage = async ({
   searchParams,

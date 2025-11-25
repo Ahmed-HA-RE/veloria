@@ -11,7 +11,7 @@ import {
   updateUserPassSchema,
   updateUserPubInfoSchema,
 } from '@/schema/userSchema';
-import { APIError } from 'better-auth';
+import { APIError, email } from 'better-auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -258,6 +258,7 @@ export const updateUserPubInfo = async (
     if (!user) throw new Error('User not found');
     const validateData = updateUserPubInfoSchema.safeParse({
       name: data.name || user.name,
+      email: data.email || user.email,
       bio: data.bio || user.bio,
     });
 
@@ -267,6 +268,7 @@ export const updateUserPubInfo = async (
 
     const updateData = {
       name: validateData.data.name,
+      email: validateData.data.email,
       bio: validateData.data.bio === '' ? null : validateData.data.bio,
     };
 
@@ -291,11 +293,7 @@ export const updateUserPubInfo = async (
 
     await prisma.user.update({
       where: { id: user.id },
-      data: {
-        name: updateData.name,
-        bio: updateData.bio,
-        image: imageURL || user.image,
-      },
+      data: { ...updateData, image: imageURL },
     });
 
     revalidatePath('/', 'layout');

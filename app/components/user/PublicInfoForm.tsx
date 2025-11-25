@@ -14,19 +14,22 @@ import AvatarUpload from '../AvatarUpload';
 import { FileMetadata } from '@/app/hooks/use-file-upload';
 import { UpdateUserPubInfo } from '@/types';
 import { updateUserPubInfo } from '@/app/actions/auth';
+import { auth } from '@/lib/auth';
 
 type UserPublicInfoFormProps = {
-  userContact: UpdateUserPubInfo;
+  user: typeof auth.$Infer.Session.user;
+  providerId: string;
 };
 
-const UserPublicInfoForm = ({ userContact }: UserPublicInfoFormProps) => {
+const UserPublicInfoForm = ({ user, providerId }: UserPublicInfoFormProps) => {
   const [file, setFile] = useState<File | FileMetadata | undefined>(undefined);
 
   const form = useForm<UpdateUserPubInfo>({
     resolver: zodResolver(updateUserPubInfoSchema),
     defaultValues: {
-      name: userContact.name || '',
-      bio: userContact.bio || '',
+      name: user.name || '',
+      email: user.email || '',
+      bio: user.bio || '',
     },
     mode: 'onSubmit',
   });
@@ -71,6 +74,30 @@ const UserPublicInfoForm = ({ userContact }: UserPublicInfoFormProps) => {
                 </Field>
               )}
             />
+            {/* Email */}
+            <Controller
+              control={form.control}
+              name='email'
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                  <Input
+                    id={field.name}
+                    type='email'
+                    placeholder='Email Address'
+                    aria-invalid={fieldState.invalid}
+                    className='auth-input'
+                    disabled={
+                      providerId !== 'credential' || !user.emailVerified
+                    }
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
             {/* Bio */}
             <Controller
               control={form.control}
@@ -105,7 +132,7 @@ const UserPublicInfoForm = ({ userContact }: UserPublicInfoFormProps) => {
               {/* Upload btn */}
               <AvatarUpload
                 setFile={setFile}
-                defaultAvatar={userContact.image as string}
+                defaultAvatar={user.image || undefined}
               />
             </div>
           </div>
