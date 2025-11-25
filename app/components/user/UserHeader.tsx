@@ -1,13 +1,11 @@
-import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
+import { ShoppingCartIcon } from 'lucide-react';
 import UserMenu from '@/app/components/shared/user-menu';
-import { Input } from '@/app/components/ui/input';
-import Theme from './shared/Theme';
-import { Avatar, AvatarFallback } from './ui/avatar';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import Theme from '../shared/Theme';
+import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import Link from 'next/link';
 import Image from 'next/image';
 import { auth } from '@/lib/auth';
-import prisma from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { APP_NAME } from '@/lib/constants';
 
@@ -16,15 +14,8 @@ const UserHeader = async () => {
     headers: await headers(),
   });
 
-  const [menDressShirtsCount, menSweatShirtsCount, menSneakersCount] =
-    await Promise.all([
-      prisma.product.count({ where: { category: "Men's Dress Shirts" } }),
-      prisma.product.count({ where: { category: "Men's Sweatshirts" } }),
-      prisma.product.count({ where: { category: "Men's Sneakers" } }),
-    ]);
-
   return (
-    <header className='border-b dark:dark-border-color py-3'>
+    <header className='border-b dark:dark-border-color py-1'>
       <div className='max-w-7xl mx-auto px-4'>
         <div className='flex h-16 items-center justify-between gap-2'>
           {/* Left side */}

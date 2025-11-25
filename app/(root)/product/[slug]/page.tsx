@@ -31,7 +31,7 @@ const ProductDetailsPage = async ({
             <p>
               {product.rating} of {product.numReviews} reviews
             </p>
-            <div className='flex flex-row items-center justify-center gap-0.5 text-green-700 dark:text-green-700 py-3 px-4 rounded-full bg-green-200/80'>
+            <div className='flex flex-row items-center justify-center gap-0.5 text-green-700 dark:text-green-800 py-2 px-4 rounded-full bg-green-200/80 dark:bg-green-300/80'>
               <p className='dirham-symbol'>&#xea;</p>
               <p>{product.price}</p>
             </div>

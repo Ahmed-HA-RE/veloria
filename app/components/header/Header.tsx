@@ -25,7 +25,7 @@ const Header = async () => {
     ]);
 
   return (
-    <header className='border-b dark:dark-border-color py-3'>
+    <header className='border-b dark:dark-border-color py-1'>
       <div className='max-w-7xl mx-auto px-4'>
         <div className='flex h-16 items-center justify-between gap-2'>
           {/* Left side */}

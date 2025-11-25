@@ -1,7 +1,7 @@
 import VerifyEmailBanner from '../components/VerifyEmailBanner';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import UserHeader from '../components/UserHeader';
+import UserHeader from '../components/user/UserHeader';
 
 const UserLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth.api.getSession({
