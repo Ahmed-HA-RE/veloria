@@ -14,6 +14,21 @@ export const proxy = async (req: NextRequest) => {
 
   const { pathname } = req.nextUrl;
 
+  const checkoutPaths = [
+    '/checkout/shipping-address',
+    '/checkout/payment-method',
+    '/checkout/place-order',
+  ];
+
+  const usersPaths = ['/user/orders', '/user/profile'];
+
+  const adminPaths = [
+    '/admin/overview',
+    '/admin/products',
+    '/admin/orders',
+    '/admin/users',
+  ];
+
   if (session && session.user.role !== 'admin' && pathname === '/register') {
     return NextResponse.redirect(new URL('/', req.url));
   } else if (
@@ -31,28 +46,29 @@ export const proxy = async (req: NextRequest) => {
     return NextResponse.redirect(
       new URL('/verification?status=false', req.url)
     );
-  } else if (!session && pathname === '/checkout/shipping-address') {
+  }
+
+  // for checkout only pages
+  if (!session && checkoutPaths.find((path) => path === pathname)) {
     return NextResponse.redirect(
-      new URL(
-        `/signin?callbackUrl=${SERVER_URL}/checkout/shipping-address`,
-        req.url
-      )
+      new URL(`/signin?callbackUrl=${SERVER_URL}${pathname}`, req.url)
     );
-  } else if (!session && pathname === '/checkout/payment-method') {
-    return NextResponse.redirect(
-      new URL(
-        `/signin?callbackUrl=${SERVER_URL}/checkout/payment-method`,
-        req.url
-      )
-    );
-  } else if (!session && pathname === '/checkout/place-order') {
-    return NextResponse.redirect(
-      new URL(`/signin?callbackUrl=${SERVER_URL}/checkout/place-order`, req.url)
-    );
-  } else if (!session && pathname === '/user/orders') {
-    return NextResponse.redirect(new URL(`/`, req.url));
-  } else if (!session && pathname === '/user/profile') {
-    return NextResponse.redirect(new URL(`/`, req.url));
+  }
+
+  // for users only pages
+  if (!session && usersPaths.find((path) => path === pathname)) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
+  // for admins only pages
+  if (!session && adminPaths.find((path) => path === pathname)) {
+    return NextResponse.redirect(new URL('/', req.url));
+  } else if (
+    session &&
+    session.user.role !== 'admin' &&
+    adminPaths.find((path) => path === pathname)
+  ) {
+    return NextResponse.redirect(new URL('/', req.url));
   }
 
   // Storing cartId in cookies
@@ -75,11 +91,9 @@ export const config = {
     '/signin',
     '/verify-email',
     '/reset-password',
-    '/checkout/shipping-address',
-    '/checkout/payment-method',
-    '/checkout/place-order',
-    '/user/profile',
-    '/user/orders',
+    '/checkout/:path*',
+    '/user/:path*',
+    '/admin/:path*',
     '/((?!api|_next/static|_next/image|.*\\.png$).*)',
   ],
 };

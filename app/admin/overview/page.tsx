@@ -19,6 +19,13 @@ import {
 import { formatDateTime } from '@/lib/utils';
 import Link from 'next/link';
 import { Button } from '@/app/components/ui/button';
+import BarChartOverview from '@/app/components/admin/OverviewChart';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  description: 'Overview of sales, customers, orders and products.',
+};
 
 const AdminOverviewPage = async () => {
   const session = await auth.api.getSession({
@@ -89,16 +96,18 @@ const AdminOverviewPage = async () => {
       <div className='grid grid-cols-1 lg:grid-cols-7 gap-4'>
         {/* Chart */}
         <div className='lg:col-span-4'>
-          <Card className='dark:dark-border-color py-4'>
-            <CardHeader>
+          <Card className='dark:dark-border-color py-4 gap-2'>
+            <CardHeader className='px-3'>
               <CardTitle className='text-2xl'>Overview</CardTitle>
             </CardHeader>
-            <CardContent></CardContent>
+            <CardContent className='px-2'>
+              <BarChartOverview salesData={ordersSummary.salesData} />
+            </CardContent>
           </Card>
         </div>
         {/* Recent Sales */}
-        <div className='lg:col-span-3'>
-          <Card className='dark:dark-border-color py-4 gap-0'>
+        <div className='lg:col-span-3 h-full'>
+          <Card className='dark:dark-border-color py-4 gap-0 h-full'>
             <CardHeader>
               <CardTitle className='text-2xl'>Recent Sales</CardTitle>
             </CardHeader>
@@ -121,7 +130,12 @@ const AdminOverviewPage = async () => {
                       <TableCell>
                         {formatDateTime(order.createdAt).dateOnly}
                       </TableCell>
-                      <TableCell>{order.totalPrice}</TableCell>
+                      <TableCell className='px-2'>
+                        <div className='flex flex-row  gap-0.5 dark:text-orange-400'>
+                          <p className='dirham-symbol'>&#xea;</p>
+                          <p>{order.totalPrice}</p>
+                        </div>
+                      </TableCell>
                       <TableCell className='text-right'>
                         <Button size={'sm'} asChild>
                           <Link href={`/order/${order.id}`}>Details</Link>
