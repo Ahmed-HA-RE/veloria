@@ -286,3 +286,24 @@ export const getOrdersForAdmin = async (page: number, limit: number = 10) => {
     return { success: false, message: (error as Error).message };
   }
 };
+
+// Delete an order by ID (Admin only)
+export const deleteOrderById = async (id: string) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) throw new Error('User is not authorized');
+
+    await prisma.order.delete({
+      where: { id },
+    });
+
+    revalidatePath('/admin/orders', 'page');
+    return { success: true, message: 'Order deleted successfully' };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: (error as Error).message };
+  }
+};

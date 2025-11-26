@@ -21,6 +21,7 @@ import { APP_NAME } from '@/lib/constants';
 import Theme from '../shared/Theme';
 import { auth } from '@/lib/auth';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -32,6 +33,7 @@ const navigationLinks = [
 
 const AdminHeader = ({ session }: { session: typeof auth.$Infer.Session }) => {
   const pathname = usePathname();
+  const [openPopover, setOpenPopover] = useState(false);
 
   return (
     <header className='border-b dark:dark-border-color'>
@@ -40,7 +42,7 @@ const AdminHeader = ({ session }: { session: typeof auth.$Infer.Session }) => {
           {/* Left side */}
           <div className='flex sm:flex-1/3 items-center gap-1'>
             {/* Mobile menu trigger */}
-            <Popover>
+            <Popover open={openPopover} onOpenChange={setOpenPopover}>
               <PopoverTrigger asChild>
                 <Button
                   className='group size-8 md:hidden'
@@ -80,11 +82,17 @@ const AdminHeader = ({ session }: { session: typeof auth.$Infer.Session }) => {
                     {navigationLinks.map((link, _index) => (
                       <NavigationMenuItem className='w-full' key={link.label}>
                         <NavigationMenuLink
+                          asChild
                           active={pathname === link.href}
                           className='py-1.5 font-medium text-black dark:text-white hover:text-white'
                           href={link.href}
                         >
-                          {link.label}
+                          <Link
+                            href={link.href}
+                            onClick={() => setOpenPopover(false)}
+                          >
+                            {link.label}
+                          </Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     ))}
@@ -139,11 +147,12 @@ const AdminHeader = ({ session }: { session: typeof auth.$Infer.Session }) => {
               {navigationLinks.map((link, _index) => (
                 <NavigationMenuItem key={link.label}>
                   <NavigationMenuLink
+                    asChild
                     active={pathname === link.href}
                     className='py-1.5 font-medium text-black dark:text-white hover:text-white'
                     href={link.href}
                   >
-                    {link.label}
+                    <Link href={link.href}>{link.label}</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}

@@ -137,12 +137,12 @@ model OrderItems {
   orderId   String  @default(uuid())
   productId String  @default(uuid())
   qty       Int
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   name      String
   slug      String
   image     String
   price     Decimal @db.Decimal(10, 2)
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@id([orderId, productId])
 }

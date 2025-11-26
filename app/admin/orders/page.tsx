@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getOrdersForAdmin } from '@/app/actions/order';
+import { deleteOrderById, getOrdersForAdmin } from '@/app/actions/order';
 import { Boxes, X } from 'lucide-react';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
 import PaginationControls from '@/app/components/Pagination';
@@ -16,6 +16,7 @@ import {
 import { convertToNumber, formatDateTime, formatId } from '@/lib/utils';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
+import DeleteDialog from '@/app/components/shared/DeleteDialog';
 
 export const metadata: Metadata = {
   title: 'Admin Orders',
@@ -95,16 +96,11 @@ const AdminOrdersPage = async ({
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className='px-4 text-let'>
+                  <TableCell className='px-4 text-left'>
                     <Button size='sm' asChild>
                       <Link href={`/order/${order.id}`}>Details</Link>
                     </Button>
-                    <Button
-                      className='bg-red-600 text-white hover:bg-red-700 ml-2'
-                      size='sm'
-                    >
-                      Delete
-                    </Button>
+                    <DeleteDialog id={order.id} action={deleteOrderById} />
                   </TableCell>
                 </TableRow>
               ))}
