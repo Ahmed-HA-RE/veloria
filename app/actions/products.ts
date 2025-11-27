@@ -1,6 +1,11 @@
 'use server';
 import { LIMIT_LIST_PRODUCTS } from '@/lib/constants';
 import prisma from '@/lib/prisma';
+import {
+  insertProductSchema,
+  updateProductSchema,
+} from '@/schema/productSchema';
+import { CreateProduct, UpdateProduct } from '@/types';
 import { revalidatePath } from 'next/cache';
 
 export const getLatestProducts = async () => {
@@ -72,6 +77,53 @@ export const deleteProductById = async (id: string) => {
     revalidatePath('/admin/products', 'page');
 
     return { success: true, message: 'Product deleted successfully' };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};
+
+export const createProduct = async (data: CreateProduct) => {
+  try {
+    const validateProduct = insertProductSchema.safeParse(data);
+
+    if (!validateProduct.success) {
+      throw new Error('Invalid product data');
+    }
+
+    await prisma.product.create({
+      data: validateProduct.data,
+    });
+
+    revalidatePath('/admin/products', 'page');
+
+    return { success: true, message: 'Product created successfully' };
+  } catch (error) {
+    return { succcess: false, message: (error as Error).message };
+  }
+};
+
+export const updateProduct = async (data: UpdateProduct) => {
+  try {
+    const validateProduct = updateProductSchema.safeParse(data);
+
+    if (!validateProduct.success) {
+      throw new Error('Invalid product data');
+    }
+
+    const product = await prisma.product.findFirst({
+      where: { id: validateProduct.data.id },
+    });
+
+    if (!product) throw new Error('Product not found');
+
+    await prisma.product.update({
+      where: { id: validateProduct.data.id },
+      data: validateProduct.data,
+    });
+
+    revalidatePath('/admin/products', 'page');
+
+    return { success: true, message: 'Product updated successfully' };
   } catch (error) {
     return { success: false, message: (error as Error).message };
   }

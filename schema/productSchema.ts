@@ -32,3 +32,7 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
 });
+
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string({ error: 'Invalid product ID' }),
+});
