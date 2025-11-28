@@ -1,9 +1,9 @@
 'use client';
 
-import { useForm, Controller, SubmitErrorHandler } from 'react-hook-form';
-import { CreateProduct, UpdateProduct } from '@/types';
+import { useForm, Controller } from 'react-hook-form';
+import { CreateProduct, Product } from '@/types';
 import {
-  insertProductSchema,
+  createProductSchema,
   updateProductSchema,
 } from '@/schema/productSchema';
 import { successToast, destructiveToast } from '@/lib/utils';
@@ -14,16 +14,24 @@ import { Textarea } from '../ui/textarea';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import slugify from 'slugify';
+import { createProduct, updateProduct } from '@/app/actions/products';
+import { useRouter } from 'next/navigation';
+import ProductDropzone from './ProductDropzone';
+import { Label } from '../ui/label';
+import { useState } from 'react';
 
 type ProductFormProps = {
   type: 'create' | 'update';
-  product?: UpdateProduct;
+  product?: Product;
 };
 
 const ProductForm = ({ type, product }: ProductFormProps) => {
-  const form = useForm<CreateProduct | UpdateProduct>({
+  const router = useRouter();
+  const [files, setFiles] = useState<File[]>([]);
+
+  const form = useForm<CreateProduct>({
     resolver: zodResolver(
-      type === 'create' ? insertProductSchema : updateProductSchema
+      type === 'create' ? createProductSchema : updateProductSchema
     ),
     defaultValues:
       type === 'update'
@@ -35,25 +43,43 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
             price: '0',
             category: '',
             stock: 0,
-            isFeatured: false,
-            images: ['test'],
+            // isFeatured: false,
+            // banner: null,
             brand: '',
-            banner: null,
           },
   });
 
-  const onSubmit = async (data: CreateProduct | UpdateProduct) => {
-    console.log(data);
-  };
+  const onSubmit = async (data: CreateProduct) => {
+    if (type === 'create') {
+      const res = await createProduct(data, files);
+      if (!res.success) {
+        destructiveToast(res.message);
+        return;
+      }
+      successToast(res.message);
+      router.push('/admin/products');
+    }
 
-  const onError: SubmitErrorHandler<CreateProduct | UpdateProduct> = (
-    errors
-  ) => {
-    console.log(errors);
+    if (type === 'update') {
+      if (!product?.id) {
+        router.push('/admin/products');
+        return;
+      }
+
+      const res = await updateProduct({ ...data, id: product.id }, files);
+
+      if (!res.success) {
+        destructiveToast(res.message);
+        return;
+      }
+
+      successToast(res.message);
+      router.push('/admin/products');
+    }
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       {form.formState.isSubmitting && <ScreenSpinner mutate={true} />}
       <FieldGroup>
         {/* Name + slug */}
@@ -198,7 +224,17 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
             )}
           />
         </FieldGroup>
+
         {/* Image */}
+        <div>
+          <Label className='mb-4'>Images</Label>
+          <ProductDropzone setFiles={setFiles} />
+          {form.formState.isSubmitted && files.length === 0 && (
+            <p className='mt-2.5 text-destructive text-sm'>
+              At least one image is required
+            </p>
+          )}
+        </div>
 
         {/* isFeatured */}
 

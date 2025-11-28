@@ -1,6 +1,7 @@
 import z from 'zod';
 import {
-  insertProductSchema,
+  baseProductSchema,
+  createProductSchema,
   updateProductSchema,
 } from '@/schema/productSchema';
 import { cartItemSchema, cartSchema } from '@/schema/cartSchema';
@@ -12,7 +13,7 @@ import {
 import { orderItemSchema, orderSchema } from '@/schema/orderSchema';
 import { updateUserPubInfoSchema } from '@/schema/userSchema';
 
-export type Product = z.infer<typeof insertProductSchema> & {
+export type Product = z.infer<typeof baseProductSchema> & {
   id: string;
   rating: string;
 };
@@ -38,5 +39,5 @@ export type UpdateUserPubInfo = z.infer<typeof updateUserPubInfoSchema> & {
   image?: string | null;
 };
 
-export type CreateProduct = z.infer<typeof insertProductSchema>;
+export type CreateProduct = z.infer<typeof createProductSchema>;
 export type UpdateProduct = z.infer<typeof updateProductSchema>;

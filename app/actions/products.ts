@@ -2,11 +2,12 @@
 import { LIMIT_LIST_PRODUCTS } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import {
-  insertProductSchema,
+  createProductSchema,
   updateProductSchema,
 } from '@/schema/productSchema';
 import { CreateProduct, UpdateProduct } from '@/types';
 import { revalidatePath } from 'next/cache';
+import cloudinary from '../config/cloudinary';
 
 export const getLatestProducts = async () => {
   const data = await prisma.product.findMany({
@@ -47,6 +48,7 @@ export const getAllProducts = async ({
     const products = await prisma.product.findMany({
       take: limit,
       skip: (page - 1) * limit,
+      orderBy: { createdAt: 'desc' },
     });
 
     if (!products) throw new Error('Products not found');
@@ -82,27 +84,54 @@ export const deleteProductById = async (id: string) => {
   }
 };
 
-export const createProduct = async (data: CreateProduct) => {
+export const createProduct = async (data: CreateProduct, images: File[]) => {
   try {
-    const validateProduct = insertProductSchema.safeParse(data);
+    let imagesURL: string[] = [];
+
+    if (images.length === 0) throw new Error('At least one image is required');
+
+    const validateProduct = createProductSchema.safeParse(data);
 
     if (!validateProduct.success) {
       throw new Error('Invalid product data');
     }
 
+    for (const file of images) {
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = new Uint8Array(arrayBuffer);
+      const image: string = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            { folder: 'bayro', overwrite: true },
+            function (error, result) {
+              if (error) {
+                reject(error);
+                return;
+              }
+              resolve(result?.secure_url as string);
+            }
+          )
+          .end(buffer);
+      });
+      imagesURL.push(image);
+    }
+
     await prisma.product.create({
-      data: validateProduct.data,
+      data: {
+        ...validateProduct.data,
+        images: imagesURL,
+      },
     });
 
     revalidatePath('/admin/products', 'page');
 
     return { success: true, message: 'Product created successfully' };
   } catch (error) {
-    return { succcess: false, message: (error as Error).message };
+    return { success: false, message: (error as Error).message };
   }
 };
 
-export const updateProduct = async (data: UpdateProduct) => {
+export const updateProduct = async (data: UpdateProduct, images: File[]) => {
   try {
     const validateProduct = updateProductSchema.safeParse(data);
 
