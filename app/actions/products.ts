@@ -72,6 +72,14 @@ export const deleteProductById = async (id: string) => {
 
     if (!product) throw new Error('Product not found');
 
+    const imagesPaths = product.images.map(
+      (image) => image.split('/').at(-1)?.split('.')[0]
+    );
+
+    for (const publicId of imagesPaths) {
+      await cloudinary.uploader.destroy(`bayro/${publicId}`);
+    }
+
     await prisma.product.delete({
       where: { id },
     });

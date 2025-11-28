@@ -48,7 +48,10 @@ const AdminProductsPage = async ({
         </Button>
       </div>
       {!productsData.products || productsData.products.length === 0 ? (
-        <Alert variant='destructive' className='border-destructive'>
+        <Alert
+          variant='destructive'
+          className='border-destructive max-w-md mx-auto'
+        >
           <TriangleAlertIcon />
           <AlertTitle>No products found.</AlertTitle>
         </Alert>
@@ -99,7 +102,7 @@ const AdminProductsPage = async ({
                     <TableCell>
                       <div className='flex gap-0.5 dark:text-orange-400'>
                         <p className='dirham-symbol'>&#xea;</p>
-                        <p>{convertToNumber(product.price)}</p>
+                        <p>{product.price}</p>
                       </div>
                     </TableCell>
                     <TableCell>{product.category}</TableCell>

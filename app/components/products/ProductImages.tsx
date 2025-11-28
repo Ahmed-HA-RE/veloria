@@ -26,6 +26,9 @@ const ProductImages = ({ images }: { images: string[] }) => {
                 'border',
                 'border-orange-500',
                 'cursor-pointer',
+                'flex',
+                'items-stretch',
+                'justify-center',
                 currentImage === index && 'border-2 ring-orange-600'
               )}
               key={index}

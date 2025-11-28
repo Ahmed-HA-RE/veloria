@@ -42,8 +42,8 @@ const AdminOverviewPage = async () => {
             <p className='dirham-symbol'>&#xea;</p>
             <p>
               {Number(
-                ordersSummary.totalRevenueData._sum.totalPrice?.toString()
-              ).toLocaleString() || 0}
+                ordersSummary.totalRevenueData._sum.totalPrice?.toString() || 0
+              ).toLocaleString()}
             </p>
           </CardContent>
         </Card>
