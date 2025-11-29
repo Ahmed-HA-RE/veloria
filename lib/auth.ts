@@ -3,12 +3,12 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import prisma from './prisma';
 import { nextCookies } from 'better-auth/next-js';
 import { emailOTP } from 'better-auth/plugins/email-otp';
+import { admin } from 'better-auth/plugins';
 import { Resend } from 'resend';
 import BayroEmailVerification from '@/emails/VerifyEmail';
 import BayroResetPassword from '@/emails/ResetPassword';
 import { APP_NAME } from '@/lib/constants';
 import { createAuthMiddleware } from 'better-auth/api';
-import { fa } from 'zod/v4/locales';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -76,6 +76,10 @@ export const auth = betterAuth({
 
   plugins: [
     nextCookies(),
+    admin({
+      defaultBanReason: 'Violation of terms of service',
+      defaultBanExpiresIn: 9000 * 24 * 60 * 60 * 1000, // 9000 days
+    }),
     emailOTP({
       otpLength: 6,
       expiresIn: 600, // 10 min

@@ -385,3 +385,33 @@ export const updateUserPass = async (values: UpdateUserPassForm) => {
     return { success: false, message: (error as Error).message };
   }
 };
+
+export const getAllUsersForAdmin = async (page: number, limit: number = 10) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (session?.user.role !== 'admin')
+      throw new Error('User is not authorized');
+
+    const users = await auth.api.listUsers({
+      query: {
+        limit,
+        offset: (page - 1) * limit,
+      },
+      headers: await headers(),
+    });
+
+    if (!users) throw new Error('No users found');
+
+    const totalUsers = users.total;
+
+    return {
+      users: users.users,
+      totalPages: Math.ceil(totalUsers / limit),
+    };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};

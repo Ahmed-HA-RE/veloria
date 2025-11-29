@@ -267,7 +267,8 @@ export const getOrdersForAdmin = async (page: number, limit: number = 10) => {
       headers: await headers(),
     });
 
-    if (!session) throw new Error('User is not authorized');
+    if (session?.user.role !== 'admin')
+      throw new Error('User is not authorized');
 
     const orders = await prisma.order.findMany({
       orderBy: { createdAt: 'desc' },

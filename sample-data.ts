@@ -6,8 +6,8 @@ const sampleData = {
       category: "Men's Sneakers",
       description: 'Lightweight running shoes designed for speed and comfort',
       images: [
-        '/images/sample-products/p7-1.jpg',
-        '/images/sample-products/p7-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764330999/bayro/awyh4uukqg0yfvch2tbu.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331001/bayro/ue5sgjcvedm0cqiugfsy.jpg',
       ],
       price: 765.95,
       brand: 'Nike',
@@ -15,7 +15,8 @@ const sampleData = {
       numReviews: 20,
       stock: 0,
       isFeatured: true,
-      banner: null,
+      banner:
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764346996/bayro/axswvekoinv1k9widmcs.jpg',
     },
     {
       name: 'Nike Air Jordan Retro',
@@ -24,8 +25,8 @@ const sampleData = {
       description:
         'Classic Air Jordan design with premium cushioning and style',
       images: [
-        '/images/sample-products/p8-1.jpg',
-        '/images/sample-products/p8-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331059/bayro/fqyo8f4bns4rtzdxurn8.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331060/bayro/aaerv7kc6c076jixasjd.jpg',
       ],
       price: 1100.99,
       brand: 'Nike',
@@ -33,7 +34,8 @@ const sampleData = {
       numReviews: 12,
       stock: 7,
       isFeatured: true,
-      banner: 'banner-2.jpg',
+      banner:
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764347164/bayro/odeft7qurafistaszvnp.jpg',
     },
     {
       name: 'Elite Three-Pack Dress Shirts',
@@ -41,7 +43,9 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description:
         'Pack of three elegant shirts, perfect for formal and office wear',
-      images: ['/images/sample-products/p9-1.jpg'],
+      images: [
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331115/bayro/yni94nw4l9blajqtdzal.jpg',
+      ],
       price: 450.45,
       brand: 'Elite',
       rating: 4.5,
@@ -56,8 +60,8 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description: 'Classic Polo style with modern comfort',
       images: [
-        '/images/sample-products/p1-1.jpg',
-        '/images/sample-products/p1-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331175/bayro/jct8omunsngk9yhexstj.webp',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331176/bayro/mhtlwdjrwxhsgmbki7yy.webp',
       ],
       price: 59.99,
       brand: 'Polo',
@@ -73,8 +77,8 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description: 'Timeless style and premium comfort',
       images: [
-        '/images/sample-products/p2-1.jpg',
-        '/images/sample-products/p2-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331247/bayro/jxyqicnowakffxo4embe.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331248/bayro/q8lvyzyfedhja2ovvxz8.jpg',
       ],
       price: 85.9,
       brand: 'Brooks Brothers',
@@ -90,8 +94,8 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description: 'A perfect blend of sophistication and comfort',
       images: [
-        '/images/sample-products/p3-1.jpg',
-        '/images/sample-products/p3-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331296/bayro/ldiyyhsdq0uxm2vvczyv.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331298/bayro/rwedckasqxfeefz8dsn8.jpg',
       ],
       price: 99.95,
       brand: 'Tommy Hilfiger',
@@ -107,8 +111,8 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description: 'Streamlined design with flexible stretch fabric',
       images: [
-        '/images/sample-products/p4-1.jpg',
-        '/images/sample-products/p4-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331342/bayro/wv4zpsxyd4okhwck8yob.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331343/bayro/vaxhrorray4zpjvati2x.jpg',
       ],
       price: 39.95,
       brand: 'Calvin Klein',
@@ -124,8 +128,8 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description: 'Iconic Polo design with refined oxford fabric',
       images: [
-        '/images/sample-products/p5-1.jpg',
-        '/images/sample-products/p5-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331464/bayro/fcvlhh7ithr4xbevbtgx.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331465/bayro/qbkgm5rlr6km5y2f3mus.jpg',
       ],
       price: 79.99,
       brand: 'Polo',
@@ -141,8 +145,8 @@ const sampleData = {
       category: "Men's Sweatshirts",
       description: 'Soft, stylish, and perfect for laid-back days',
       images: [
-        '/images/sample-products/p6-1.jpg',
-        '/images/sample-products/p6-2.jpg',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331513/bayro/ybw2v7nr8hfiojaouqkg.webp',
+        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331515/bayro/z8f1hxgm1xls8qkiwdcw.webp',
       ],
       price: 99.99,
       brand: 'Polo',

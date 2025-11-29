@@ -9,6 +9,8 @@ import { CreateProduct, UpdateProduct } from '@/types';
 import { revalidatePath } from 'next/cache';
 import cloudinary from '../config/cloudinary';
 import { convertToPlainObject } from '@/lib/utils';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 export const getLatestProducts = async () => {
   const data = await prisma.product.findMany({
@@ -46,6 +48,13 @@ export const getAllProducts = async ({
   limit = 10,
 }: getAllProductsPrams) => {
   try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (session?.user.role !== 'admin')
+      throw new Error('User is not authorized');
+
     const products = await prisma.product.findMany({
       take: limit,
       skip: (page - 1) * limit,
