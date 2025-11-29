@@ -22,6 +22,7 @@ import Theme from '../shared/Theme';
 import { auth } from '@/lib/auth';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import AdminSearch from './AdminSearch';
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -120,17 +121,7 @@ const AdminHeader = ({ session }: { session: typeof auth.$Infer.Session }) => {
             </div>
           </div>
           {/* Middle area */}
-          <div className='relative flex flex-row items-center justify-center gap-2 sm:flex-1/3 '>
-            <Input
-              className='peer h-8 ps-8 pe-2 focus-visible:border-blue-400 focus-visible:ring-blue-400 dark:focus-visible:border-blue-500 dark:focus-visible:ring-blue-500 dark:border-white dark:text-white dark:placeholder:text-gray-50/70'
-              placeholder='Search...'
-              type='search'
-            />
-
-            <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 dark:text-gray-50/80 peer-disabled:opacity-50'>
-              <SearchIcon size={16} />
-            </div>
-          </div>
+          <AdminSearch />
           {/* Right side */}
           <div className='flex sm:flex-1/3 items-center justify-end gap-2'>
             {/* Theme */}

@@ -16,7 +16,7 @@ import {
   InputOTPSlot,
 } from '@/app/components/ui/input-otp';
 import { useTransition } from 'react';
-import { sendEmailVerificationOTP, verifyEmail } from '@/app/actions/auth';
+import { sendEmailVerificationOTP, verifyEmail } from '@/lib/actions/auth';
 import { auth } from '@/lib/auth';
 import ScreenSpinner from '../ScreenSpinner';
 import { Controller, useForm } from 'react-hook-form';

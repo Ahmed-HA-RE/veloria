@@ -1,4 +1,4 @@
-import { getOrderById } from '@/app/actions/order';
+import { getOrderById } from '@/lib/actions/order';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import OrderDetailsTable from '@/app/components/OrderDetailsTable';

@@ -1,9 +1,9 @@
-import { getProductBySlug } from '@/app/actions/products';
+import { getProductBySlug } from '@/lib/actions/products';
 import { notFound } from 'next/navigation';
 import ActionDrawer from '@/app/components/products/ActionDrawer';
 import { convertToPlainObject } from '@/lib/utils';
 import ProductImages from '@/app/components/products/ProductImages';
-import { getMyCart } from '@/app/actions/cart';
+import { getMyCart } from '@/lib/actions/cart';
 
 const ProductDetailsPage = async ({
   params,

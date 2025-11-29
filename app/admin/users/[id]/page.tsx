@@ -1,4 +1,4 @@
-import { getUserById } from '@/app/actions/auth';
+import { getUserById } from '@/lib/actions/auth';
 import { Metadata } from 'next';
 
 import UpdateUserPublicInfo from '@/app/components/admin/UpdateUserPublicInfo';

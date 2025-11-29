@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getMyOrders } from '@/app/actions/order';
+import { getMyOrders } from '@/lib/actions/order';
 import { Alert, AlertDescription, AlertTitle } from '@/app/components/ui/alert';
 import { TriangleAlertIcon, X } from 'lucide-react';
 import {

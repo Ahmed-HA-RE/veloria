@@ -24,7 +24,7 @@ import { destructiveToast, successToast } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '../ui/spinner';
-import { addItemToCart, removeItemFromCart } from '../../actions/cart';
+import { addItemToCart, removeItemFromCart } from '../../../lib/actions/cart';
 import { Separator } from '../ui/separator';
 
 type ActionDrawerProps = {

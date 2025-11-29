@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getUserById } from '@/app/actions/auth';
+import { getUserById } from '@/lib/actions/auth';
 import { Shipping } from '@/types';
 import UserContactForm from '@/app/components/user/ContactInfoForm';
 import UserPublicInfoForm from '@/app/components/user/PublicInfoForm';

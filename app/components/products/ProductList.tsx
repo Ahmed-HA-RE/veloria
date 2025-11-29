@@ -1,7 +1,7 @@
 import { Alert, AlertTitle } from '../ui/alert';
 import { TriangleAlertIcon } from 'lucide-react';
 import ProductCard from './ProductCard';
-import { getLatestProducts } from '../../actions/products';
+import { getLatestProducts } from '../../../lib/actions/products';
 
 const ProductList = async () => {
   const products = await getLatestProducts();

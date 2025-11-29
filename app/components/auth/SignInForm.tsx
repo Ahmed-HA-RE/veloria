@@ -24,7 +24,7 @@ import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Checkbox } from '../ui/checkbox';
-import { signInUser, singInSocials } from '@/app/actions/auth';
+import { signInUser, singInSocials } from '@/lib/actions/auth';
 
 const SignInForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const [isPending, startTransition] = useTransition();

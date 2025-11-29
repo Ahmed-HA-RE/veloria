@@ -12,7 +12,7 @@ import { destructiveToast, successToast } from '@/lib/utils';
 import { PAYMENT_METHODS } from '@/lib/constants';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
-import { updateUserPayment } from '../../actions/auth';
+import { updateUserPayment } from '../../../lib/actions/auth';
 import { RadioGroup, RadioGroupItem } from '../ui/motion-radio-group';
 
 const PaymentMethodForm = ({ userPayment }: { userPayment: string | null }) => {

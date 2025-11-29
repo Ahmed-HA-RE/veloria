@@ -13,7 +13,7 @@ import { Textarea } from '../ui/textarea';
 import AvatarUpload from '../AvatarUpload';
 import { FileMetadata } from '@/app/hooks/use-file-upload';
 import { UpdateUserPubInfo } from '@/types';
-import { updateUserPubInfo } from '@/app/actions/auth';
+import { updateUserPubInfo } from '@/lib/actions/auth';
 import { auth } from '@/lib/auth';
 
 type UserPublicInfoFormProps = {

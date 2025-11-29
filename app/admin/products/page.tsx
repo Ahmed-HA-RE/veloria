@@ -1,9 +1,14 @@
-import { deleteProductById, getAllProducts } from '@/app/actions/products';
+import { deleteProductById, getAllProducts } from '@/lib/actions/products';
 import PaginationControls from '@/app/components/Pagination';
 import DeleteDialog from '@/app/components/shared/DeleteDialog';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
 import { Avatar, AvatarFallback } from '@/app/components/ui/avatar';
 import { Button } from '@/app/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../../components/ui/tooltip';
 import {
   Table,
   TableBody,
@@ -13,7 +18,12 @@ import {
   TableRow,
 } from '@/app/components/ui/table';
 import { convertToNumber } from '@/lib/utils';
-import { PencilIcon, TriangleAlertIcon } from 'lucide-react';
+import {
+  PackagePlus,
+  PencilIcon,
+  SearchX,
+  TriangleAlertIcon,
+} from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -27,7 +37,7 @@ export const metadata: Metadata = {
 const AdminProductsPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ [key: string]: string }>;
 }) => {
   const page = Number((await searchParams).page) || 1;
   const query = (await searchParams).query || '';
@@ -35,17 +45,55 @@ const AdminProductsPage = async ({
 
   const productsData = await getAllProducts({
     page,
-    query: query as string,
-    category: category as string,
+    query: query,
+    category: category,
   });
 
   return (
     <section className='mt-4'>
       <div className='flex flex-row justify-between products-center mb-4'>
         <h1 className='text-3xl md:text-4xl font-bold'>Products</h1>
-        <Button asChild>
-          <Link href='/admin/products/new'>Add New Product</Link>
-        </Button>
+        <div className='space-x-2'>
+          {/* Clear query */}
+          {query && (
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  asChild
+                  variant={'outline'}
+                  size={'icon'}
+                  className='border-black/50 dark:dark-border-color'
+                >
+                  <Link href='/admin/products'>
+                    <SearchX />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Clear Filter</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+
+          {/* Add product */}
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                asChild
+                variant={'outline'}
+                size={'icon'}
+                className='border-black/50 dark:dark-border-color'
+              >
+                <Link href='/admin/products/new'>
+                  <PackagePlus />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Add product</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
       {!productsData.products || productsData.products.length === 0 ? (
         <Alert

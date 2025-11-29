@@ -1,5 +1,5 @@
 import CartTable from '@/app/components/cart/CartTable';
-import { getMyCart } from '@/app/actions/cart';
+import { getMyCart } from '@/lib/actions/cart';
 import { Metadata } from 'next';
 import CartTotalCard from '@/app/components/cart/CartTotalCard';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';

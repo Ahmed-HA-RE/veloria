@@ -18,7 +18,7 @@ import { type RegisterUserForm, registerSchema } from '@/schema/userSchema';
 import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { registerUser } from '@/app/actions/auth';
+import { registerUser } from '@/lib/actions/auth';
 
 const RegisterForm = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const [isPending, startTransition] = useTransition();

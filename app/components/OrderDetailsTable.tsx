@@ -30,7 +30,7 @@ import {
   confirmOrderPayment,
   updateOrderToPaidCOD,
   updateOrderToDelivered,
-} from '../actions/order';
+} from '../../lib/actions/order';
 import {
   PayPalScriptProvider,
   PayPalButtons,

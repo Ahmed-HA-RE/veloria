@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { deleteOrderById, getOrdersForAdmin } from '@/app/actions/order';
+import { deleteOrderById, getOrdersForAdmin } from '@/lib/actions/order';
 import { Boxes, X } from 'lucide-react';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
 import PaginationControls from '@/app/components/Pagination';
@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/app/components/ui/table';
-import { convertToNumber, formatDateTime, formatId } from '@/lib/utils';
+import { formatDateTime, formatId } from '@/lib/utils';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import DeleteDialog from '@/app/components/shared/DeleteDialog';
@@ -73,7 +73,7 @@ const AdminOrdersPage = async ({
                   <TableCell className='px-4'>
                     <div className='flex gap-0.5 dark:text-orange-400'>
                       <p className='dirham-symbol'>&#xea;</p>
-                      <p>{convertToNumber(order.totalPrice)}</p>
+                      <p>{order.totalPrice}</p>
                     </div>
                   </TableCell>
                   <TableCell className='px-4'>

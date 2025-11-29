@@ -1,5 +1,5 @@
-import { getUserById } from '@/app/actions/auth';
-import { getMyCart } from '@/app/actions/cart';
+import { getUserById } from '@/lib/actions/auth';
+import { getMyCart } from '@/lib/actions/cart';
 import CheckoutStepper from '@/app/components/checkout/CheckoutStepper';
 import ShippingAddressForm from '@/app/components/checkout/ShippingAddressForm';
 import { auth } from '@/lib/auth';

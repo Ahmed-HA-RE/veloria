@@ -22,9 +22,9 @@ import { Shipping, PaymentMethod } from '@/types';
 import { shippingSchema } from '@/schema/checkoutSchema';
 import { paymentMethodSchema } from '@/schema/checkoutSchema';
 import { revalidatePath } from 'next/cache';
-import { FileMetadata } from '../hooks/use-file-upload';
+import { FileMetadata } from '../../app/hooks/use-file-upload';
 import { UpdateUserPubInfo } from '@/types';
-import cloudinary from '../config/cloudinary';
+import cloudinary from '../../app/config/cloudinary';
 
 export const registerUser = async (values: RegisterUserForm) => {
   try {

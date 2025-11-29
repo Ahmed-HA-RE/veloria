@@ -5,7 +5,7 @@ import ScreenSpinner from '../ScreenSpinner';
 import { Check } from 'lucide-react';
 import { successToast, destructiveToast } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { createOrder } from '@/app/actions/order';
+import { createOrder } from '@/lib/actions/order';
 
 const PlaceOrderBtn = () => {
   const [isPending, startTransition] = useTransition();

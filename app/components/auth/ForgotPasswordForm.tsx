@@ -8,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import ScreenSpinner from '../ScreenSpinner';
-import { requestResetPassowrd } from '@/app/actions/auth';
+import { requestResetPassowrd } from '@/lib/actions/auth';
 import { destructiveToast, successToast } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 

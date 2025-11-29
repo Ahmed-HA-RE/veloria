@@ -1,4 +1,4 @@
-import { deleteUserAsAdmin, getAllUsersForAdmin } from '@/app/actions/auth';
+import { deleteUserAsAdmin, getAllUsersForAdmin } from '@/lib/actions/auth';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
 import {
   Table,

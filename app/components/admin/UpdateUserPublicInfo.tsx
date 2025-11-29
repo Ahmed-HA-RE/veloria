@@ -23,7 +23,7 @@ import AvatarUpload from '../AvatarUpload';
 import { FileMetadata } from '@/app/hooks/use-file-upload';
 import { NativeSelect, NativeSelectOption } from '../ui/native-select';
 import { USERS_ROLES } from '@/lib/constants';
-import { updateUserPublicInfoAsAdmin } from '@/app/actions/auth';
+import { updateUserPublicInfoAsAdmin } from '@/lib/actions/auth';
 import { useRouter } from 'next/navigation';
 
 type UpdateUserPublicInfoProps = {

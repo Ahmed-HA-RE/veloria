@@ -14,7 +14,7 @@ import { Textarea } from '../ui/textarea';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import slugify from 'slugify';
-import { createProduct, updateProduct } from '@/app/actions/products';
+import { createProduct, updateProduct } from '@/lib/actions/products';
 import { useRouter } from 'next/navigation';
 import ProductDropzone from './ProductDropzone';
 import { useState } from 'react';

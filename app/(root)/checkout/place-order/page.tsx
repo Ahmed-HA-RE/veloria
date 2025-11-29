@@ -1,7 +1,7 @@
 import CheckoutStepper from '@/app/components/checkout/CheckoutStepper';
 import { redirect } from 'next/navigation';
-import { getUserById } from '@/app/actions/auth';
-import { getMyCart } from '@/app/actions/cart';
+import { getUserById } from '@/lib/actions/auth';
+import { getMyCart } from '@/lib/actions/cart';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { Metadata } from 'next';

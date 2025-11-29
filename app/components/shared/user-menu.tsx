@@ -17,7 +17,7 @@ import { TfiPackage } from 'react-icons/tfi';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
-import { signOutUser } from '@/app/actions/auth';
+import { signOutUser } from '@/lib/actions/auth';
 import { Suspense, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import ScreenSpinner from '../ScreenSpinner';

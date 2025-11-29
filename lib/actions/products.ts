@@ -7,10 +7,11 @@ import {
 } from '@/schema/productSchema';
 import { CreateProduct, UpdateProduct } from '@/types';
 import { revalidatePath } from 'next/cache';
-import cloudinary from '../config/cloudinary';
+import cloudinary from '../../app/config/cloudinary';
 import { convertToPlainObject } from '@/lib/utils';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
+import { Prisma } from '@/lib/generated/prisma/client';
 
 export const getLatestProducts = async () => {
   const data = await prisma.product.findMany({
@@ -55,10 +56,15 @@ export const getAllProducts = async ({
     if (session?.user.role !== 'admin')
       throw new Error('User is not authorized');
 
+    const queryFilter: Prisma.ProductWhereInput = query
+      ? { name: { contains: query, mode: 'insensitive' } }
+      : {};
+
     const products = await prisma.product.findMany({
       take: limit,
       skip: (page - 1) * limit,
       orderBy: { createdAt: 'desc' },
+      where: { ...queryFilter },
     });
 
     if (!products) throw new Error('Products not found');

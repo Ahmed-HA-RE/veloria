@@ -1,6 +1,6 @@
 import ProductForm from '@/app/components/admin/ProductForm';
 import { Metadata } from 'next';
-import { getProductById } from '@/app/actions/products';
+import { getProductById } from '@/lib/actions/products';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {

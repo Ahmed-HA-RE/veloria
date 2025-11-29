@@ -1,4 +1,4 @@
-import { getOrdersOverview } from '@/app/actions/order';
+import { getOrdersOverview } from '@/lib/actions/order';
 import {
   Card,
   CardHeader,

@@ -2,7 +2,7 @@
 
 import { useTransition } from 'react';
 import { Button } from '../ui/button';
-import { banUserAsAdmin, unbanUserAsAdmin } from '@/app/actions/auth';
+import { banUserAsAdmin, unbanUserAsAdmin } from '@/lib/actions/auth';
 import { destructiveToast, successToast } from '@/lib/utils';
 import { UserWithRole } from 'better-auth/plugins';
 import ScreenSpinner from '../ScreenSpinner';

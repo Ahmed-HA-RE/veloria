@@ -22,7 +22,7 @@ import { NativeSelect, NativeSelectOption } from '../ui/native-select';
 import {
   updateUserAddress,
   updateUserContactInfoAsAdmin,
-} from '@/app/actions/auth';
+} from '@/lib/actions/auth';
 import { useRouter } from 'next/navigation';
 
 type UserContactFormProps = {

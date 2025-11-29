@@ -6,7 +6,7 @@ import { Mail, XIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { auth } from '@/lib/auth';
 import ScreenSpinner from './ScreenSpinner';
-import { sendEmailVerificationOTP } from '../actions/auth';
+import { sendEmailVerificationOTP } from '../../lib/actions/auth';
 import { destructiveToast, successToast } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 

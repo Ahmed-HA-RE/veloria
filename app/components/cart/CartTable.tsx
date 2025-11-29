@@ -16,7 +16,7 @@ import {
 } from '@/app/components/ui/table';
 import Link from 'next/link';
 import Image from 'next/image';
-import { addItemToCart, removeItemFromCart } from '@/app/actions/cart';
+import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart';
 import { useTransition } from 'react';
 import { Button } from '../ui/button';
 import ScreenSpinner from '../ScreenSpinner';

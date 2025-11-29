@@ -9,7 +9,7 @@ import { destructiveToast, successToast } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
 import { UpdateUserPassForm, updateUserPassSchema } from '@/schema/userSchema';
-import { updateUserPass } from '@/app/actions/auth';
+import { updateUserPass } from '@/lib/actions/auth';
 import Link from 'next/link';
 
 const UserChangePassForm = () => {
