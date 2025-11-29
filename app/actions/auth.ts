@@ -432,6 +432,12 @@ export const deleteUserAsAdmin = async (id: string) => {
     });
 
     if (!user) throw new Error('User not found');
+
+    // delete user avatar from cloudinary
+    const publicId = user.image?.split('/').at(-1)?.split('.')[0];
+
+    cloudinary.uploader.destroy(`avatars/${publicId}`);
+
     await prisma.user.delete({
       where: { id },
     });
