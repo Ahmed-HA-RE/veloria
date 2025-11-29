@@ -11,7 +11,7 @@ import {
   updateUserPassSchema,
   updateUserPubInfoSchema,
 } from '@/schema/userSchema';
-import { APIError, email } from 'better-auth';
+import { APIError, email, success } from 'better-auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -411,6 +411,73 @@ export const getAllUsersForAdmin = async (page: number, limit: number = 10) => {
       users: users.users,
       totalPages: Math.ceil(totalUsers / limit),
     };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};
+
+export const deleteUserAsAdmin = async (id: string) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
+
+    if (!user) throw new Error('User not found');
+
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    revalidatePath('/admin/users', 'page');
+
+    return { success: true, message: 'User deleted successfully' };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};
+
+export const banUserAsAdmin = async (id: string) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
+
+    if (!user) throw new Error('User not found');
+
+    await auth.api.banUser({
+      body: {
+        userId: id,
+        banReason: 'Violation of terms of service',
+      },
+      headers: await headers(),
+    });
+
+    revalidatePath('/admin/users', 'page');
+
+    return { success: true, message: 'User banned successfully' };
+  } catch (error) {
+    return { success: false, message: (error as Error).message };
+  }
+};
+
+export const unbanUserAsAdmin = async (id: string) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
+
+    if (!user) throw new Error('User not found');
+
+    await auth.api.unbanUser({
+      body: {
+        userId: id,
+      },
+      headers: await headers(),
+    });
+
+    revalidatePath('/admin/users', 'page');
+
+    return { success: true, message: 'User unbanned successfully' };
   } catch (error) {
     return { success: false, message: (error as Error).message };
   }

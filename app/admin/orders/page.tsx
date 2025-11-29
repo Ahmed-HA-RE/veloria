@@ -97,7 +97,7 @@ const AdminOrdersPage = async ({
                     )}
                   </TableCell>
                   <TableCell className='px-4 text-left'>
-                    <Button size='sm' asChild>
+                    <Button className='mr-2' size='sm' asChild>
                       <Link href={`/order/${order.id}`}>Details</Link>
                     </Button>
                     <DeleteDialog

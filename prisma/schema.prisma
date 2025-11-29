@@ -42,8 +42,8 @@ model User {
   image         String?
   role          String    @default("user")
   banned        Boolean   @default(false)
-  bannedReason  String?
-  bannedAt      DateTime?
+  banReason     String?
+  banExpires    DateTime?
   bio           String?
   address       Json?     @db.Json
   paymentMethod String?

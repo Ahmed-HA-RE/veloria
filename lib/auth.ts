@@ -78,7 +78,6 @@ export const auth = betterAuth({
     nextCookies(),
     admin({
       defaultBanReason: 'Violation of terms of service',
-      defaultBanExpiresIn: 9000 * 24 * 60 * 60 * 1000, // 9000 days
     }),
     emailOTP({
       otpLength: 6,

@@ -19,7 +19,7 @@ import { Spinner } from '../ui/spinner';
 type DeleteDialogProps = {
   id: string;
   action: (id: string) => Promise<{ success: boolean; message: string }>;
-  type: string;
+  type: 'order' | 'user' | 'product';
 };
 
 const DeleteDialog = ({ id, action, type }: DeleteDialogProps) => {
@@ -44,11 +44,10 @@ const DeleteDialog = ({ id, action, type }: DeleteDialogProps) => {
     <>
       <Button
         onClick={() => setOpenModal(!openModal)}
-        variant={type === 'order' ? 'destructive' : 'ghost'}
-        className='ml-2'
-        size={type === 'order' ? 'sm' : 'icon'}
+        variant={type === 'order' || type === 'user' ? 'destructive' : 'ghost'}
+        size={type === 'order' || type === 'user' ? 'sm' : 'icon'}
       >
-        {type === 'order' ? 'Delete' : <Trash2Icon />}
+        {type === 'order' || type === 'user' ? 'Delete' : <Trash2Icon />}
       </Button>
       <AlertDialog open={openModal} onOpenChange={setOpenModal}>
         <AlertDialogContent>

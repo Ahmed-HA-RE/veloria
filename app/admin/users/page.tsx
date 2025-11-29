@@ -1,4 +1,4 @@
-import { getAllUsersForAdmin } from '@/app/actions/auth';
+import { deleteUserAsAdmin, getAllUsersForAdmin } from '@/app/actions/auth';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
 import {
   Table,
@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/app/components/ui/table';
 import { FaUsers } from 'react-icons/fa6';
+import { BookUser } from 'lucide-react';
 import Image from 'next/image';
 import { Badge } from '@/app/components/ui/badge';
 import { Button } from '@/app/components/ui/button';
@@ -16,6 +17,8 @@ import Link from 'next/link';
 import { Avatar, AvatarFallback } from '@/app/components/ui/avatar';
 import { Suspense } from 'react';
 import PaginationControls from '@/app/components/Pagination';
+import DeleteDialog from '@/app/components/shared/DeleteDialog';
+import ToggleBanUserButton from '@/app/components/admin/ToggleBanUserButton';
 
 const AdminUsersPage = async ({
   searchParams,
@@ -42,7 +45,7 @@ const AdminUsersPage = async ({
                 <TableHead>NAME</TableHead>
                 <TableHead>EMAIL</TableHead>
                 <TableHead>ROLE</TableHead>
-                <TableHead className='text-center'>ACTIONS</TableHead>
+                <TableHead className='text-left'>ACTIONS</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -84,15 +87,16 @@ const AdminUsersPage = async ({
                       <Badge variant={'secondary'}>User</Badge>
                     )}
                   </TableCell>
-                  <TableCell className='text-center'>
-                    <Button size='sm' asChild>
-                      <Link href={`/users/${user.id}`}>Details</Link>
+                  <TableCell className='text-left flex items-center gap-2'>
+                    <Button size='sm' variant={'default'} asChild>
+                      <Link href={`/users/${user.id}`}>Edit</Link>
                     </Button>
-                    {/* <DeleteDialog
-                      id={order.id}
-                      action={deleteOrderById}
-                      type={'order'}
-                    /> */}
+                    <DeleteDialog
+                      id={user.id}
+                      action={deleteUserAsAdmin}
+                      type={'user'}
+                    />
+                    <ToggleBanUserButton user={user} />
                   </TableCell>
                 </TableRow>
               ))}
