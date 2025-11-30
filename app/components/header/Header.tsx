@@ -1,6 +1,5 @@
-import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
+import { ShoppingCartIcon } from 'lucide-react';
 import UserMenu from '@/app/components/shared/user-menu';
-import { Input } from '@/app/components/ui/input';
 import Theme from '../shared/Theme';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
@@ -10,6 +9,8 @@ import CategorySheet from './CategorySheet';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { APP_NAME } from '@/lib/constants';
+import Search from '../Search';
+import { getCategories } from '@/lib/actions/products';
 
 const Header = async () => {
   const session = await auth.api.getSession({
@@ -21,7 +22,7 @@ const Header = async () => {
       <div className='max-w-7xl mx-auto px-4'>
         <div className='flex h-16 items-center justify-between gap-2'>
           {/* Left side */}
-          <div className='flex flex-1/3 md:flex-1/2 items-center gap-1'>
+          <div className='flex flex-1/4 md:flex-1/5 items-center gap-1'>
             {/* Category Sheet */}
             <CategorySheet />
 
@@ -44,20 +45,9 @@ const Header = async () => {
             </div>
           </div>
           {/* Middle area */}
-          <div className='relative flex flex-row items-center justify-center gap-2 flex-1/2 md:flex-1/3'>
-            <Input
-              className='peer h-8 ps-8 pe-2 focus-visible:border-blue-400 focus-visible:ring-blue-400 dark:focus-visible:border-blue-500 dark:focus-visible:ring-blue-500 dark:border-white dark:text-white dark:placeholder:text-gray-50/70'
-              placeholder='Search...'
-              type='search'
-            />
-
-            <div className='pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 dark:text-gray-50/80 peer-disabled:opacity-50'>
-              <SearchIcon size={16} />
-            </div>
-          </div>
-
+          <Search />
           {/* Right side */}
-          <div className='flex flex-1/2 items-center justify-end gap-2 md:gap-4'>
+          <div className='flex flex-1/3 md:flex-1/5 items-center justify-end gap-2 md:gap-4'>
             <div className='flex items-center md:gap-2'>
               {/* Theme */}
               <Theme />
