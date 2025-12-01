@@ -60,16 +60,21 @@ export const getAllProducts = async ({
       ? { name: { contains: query, mode: 'insensitive' } }
       : {};
 
+    const categoryFilter: Prisma.ProductWhereInput =
+      category && category !== 'all' ? { category: { equals: category } } : {};
+
     const products = await prisma.product.findMany({
       take: limit,
       skip: (page - 1) * limit,
       orderBy: { createdAt: 'desc' },
-      where: { ...queryFilter },
+      where: { ...queryFilter, ...categoryFilter },
     });
 
     if (!products) throw new Error('Products not found');
 
-    const totalProducts = await prisma.product.count();
+    const totalProducts = await prisma.product.count({
+      where: { ...queryFilter, ...categoryFilter },
+    });
 
     return {
       products,
@@ -296,7 +301,10 @@ export const getCategories = async () => {
     _count: true,
   });
 
-  return categories;
+  return categories.map((cat) => ({
+    category: cat.category,
+    count: cat._count,
+  }));
 };
 
 export const getFeaturedProducts = async () => {

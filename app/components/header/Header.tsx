@@ -17,6 +17,8 @@ const Header = async () => {
     headers: await headers(),
   });
 
+  const categories = await getCategories();
+
   return (
     <header className='border-b dark:dark-border-color py-1'>
       <div className='max-w-7xl mx-auto px-4'>
@@ -45,7 +47,7 @@ const Header = async () => {
             </div>
           </div>
           {/* Middle area */}
-          <Search />
+          <Search categories={categories} />
           {/* Right side */}
           <div className='flex flex-1/3 md:flex-1/5 items-center justify-end gap-2 md:gap-4'>
             <div className='flex items-center md:gap-2'>

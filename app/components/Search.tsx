@@ -1,34 +1,34 @@
+'use client';
+
 import { SearchIcon } from 'lucide-react';
 import { Input } from './ui/input';
 import { NativeSelect, NativeSelectOption } from './ui/native-select';
-import { getCategories } from '@/lib/actions/products';
 import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
+import { useQueryState, throttle } from 'nuqs';
 
-const Search = async () => {
-  const categories = await getCategories();
-  const searchUrl = '/search';
+type SearchProps = {
+  categories: {
+    category: string;
+  }[];
+};
+
+const Search = ({ categories }: SearchProps) => {
+  const [q, setQ] = useQueryState('q', {
+    shallow: false,
+    limitUrlUpdates: throttle(300),
+  });
 
   return (
-    <form
-      action={searchUrl}
-      method='GET'
-      className='flex flex-row items-center justify-center gap-2 md:flex-1/2'
-    >
-      <div className='hidden md:block flex-1/3'>
-        <NativeSelect
-          className='dark:border-white focus-visible:border-blue-500 focus-visible:ring-blue-500 placeholder:text-gray-500 dark:placeholder:text-gray-300'
-          name='category'
-        >
+    <div className='flex flex-row items-center justify-center gap-2 md:flex-1/3'>
+      <div className='hidden md:block flex-1/6'>
+        <NativeSelect className='dark:border-white focus-visible:border-blue-500 focus-visible:ring-blue-500 placeholder:text-gray-500 dark:placeholder:text-gray-300'>
           <NativeSelectOption value='all'>All</NativeSelectOption>
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <NativeSelectOption
-                key={category.category}
-                value={category.category}
-              >
-                {category.category}
-              </NativeSelectOption>
-            ))}
+          {categories.map(({ category }) => (
+            <NativeSelectOption key={category} value={category}>
+              {category}
+            </NativeSelectOption>
+          ))}
         </NativeSelect>
       </div>
       <div className='flex flex-row items-center justify-center gap-2 md:flex-1/2'>
@@ -36,13 +36,14 @@ const Search = async () => {
           className='h-9 focus-visible:border-blue-400 focus-visible:ring-blue-400 dark:focus-visible:border-blue-500 dark:focus-visible:ring-blue-500 dark:border-white dark:text-white dark:placeholder:text-gray-50/70'
           placeholder='Search...'
           type='search'
-          name='q'
+          value={q || ''}
+          onChange={(e) => setQ(e.target.value || null)}
         />
         <Button>
           <SearchIcon size={16} />
         </Button>
       </div>
-    </form>
+    </div>
   );
 };
 

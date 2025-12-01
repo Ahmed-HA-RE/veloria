@@ -40,7 +40,7 @@ const CategorySheet = async () => {
               href={`/search?category=${category.category}`}
               className='hover:bg-blue-50 text-black dark:text-white dark:hover:bg-gray-100/30 cursor-pointer rounded-md p-3'
             >
-              {category.category} ({category._count})
+              {category.category} ({category.count})
             </Link>
           ))}
         </div>
