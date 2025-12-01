@@ -5,8 +5,9 @@ import type { SearchParams } from 'nuqs';
 import { Alert, AlertTitle } from '@/app/components/ui/alert';
 import { getAllProducts } from '@/lib/actions/products';
 import { TriangleAlertIcon } from 'lucide-react';
-import ProductSort from '@/app/components/products/ProductSort';
-import { Card } from '@/app/components/ui/card';
+import ProductFilter from '@/app/components/products/ProductFilter';
+import { getCategories } from '@/lib/actions/products';
+import { getProductsCount } from '@/lib/actions/products';
 
 type ProductsPageProps = {
   searchParams: Promise<SearchParams>;
@@ -16,11 +17,14 @@ const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
   const { q, price, category, rate, sort, page } =
     await loadSearchParams(searchParams);
 
-  const data = await getAllProducts({ page, query: q, category, sort });
-  console.log(data);
+  const data = await getAllProducts({ page, query: q, category, sort, price });
+
+  const categories = await getCategories();
+  const totalProducts = await getProductsCount();
 
   return (
     <section className='mt-4'>
+      <ProductFilter categories={categories} totalProducts={totalProducts} />
       {!data.products || data.products?.length === 0 ? (
         <Alert
           variant='destructive'
@@ -30,27 +34,15 @@ const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
           <AlertTitle>No products found.</AlertTitle>
         </Alert>
       ) : (
-        <div className='grid grid-cols-1 md:grid-cols-7 gap-4'>
-          {/* filters */}
-          <aside className='md:col-span-2'>
-            <Card className='dark:dark-border-color'>
-              {/* Price Filter */}
-              {/* Rate Filter */}
-            </Card>
-          </aside>
-          {/* Products + Sort */}
-          <div className='md:col-span-5'>
-            <ProductSort querySort={sort} />
-            {/* Products Grid */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-5'>
-              {data.products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-            {/* Pagination */}
-            {page > 1 && <ProductsPagination totalPages={data.totalPages} />}
+        <>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-5'>
+            {data.products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
-        </div>
+          {/* Pagination */}
+          {page > 1 && <ProductsPagination totalPages={data.totalPages} />}
+        </>
       )}
     </section>
   );

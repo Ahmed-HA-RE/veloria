@@ -9,8 +9,6 @@ import { CreateProduct, UpdateProduct } from '@/types';
 import { revalidatePath } from 'next/cache';
 import cloudinary from '../../app/config/cloudinary';
 import { convertToPlainObject } from '@/lib/utils';
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
 import { Prisma } from '@/lib/generated/prisma/client';
 
 export const getLatestProducts = async () => {
@@ -40,6 +38,7 @@ type getAllProductsPrams = {
   query: string;
   category?: string;
   sort?: string;
+  price?: string;
   limit?: number;
 };
 
@@ -48,6 +47,7 @@ export const getAllProducts = async ({
   query,
   sort,
   category,
+  price,
   limit = 10,
 }: getAllProductsPrams) => {
   try {
@@ -69,17 +69,31 @@ export const getAllProducts = async ({
               ? { rating: 'desc' }
               : {};
 
+    const priceFilter: Prisma.ProductWhereInput =
+      price && price.includes('-')
+        ? {
+            price: {
+              gte: Number(price.split('-')[0]),
+              lte: Number(price.split('-')[1]),
+            },
+          }
+        : !price?.includes('-')
+          ? {
+              price: { gte: Number(price) },
+            }
+          : {};
+
     const products = await prisma.product.findMany({
       take: limit,
       skip: (page - 1) * limit,
       orderBy: { ...sortFilter },
-      where: { ...queryFilter, ...categoryFilter },
+      where: { ...queryFilter, ...categoryFilter, ...priceFilter },
     });
 
     if (!products) throw new Error('Products not found');
 
     const totalProducts = await prisma.product.count({
-      where: { ...queryFilter, ...categoryFilter },
+      where: { ...queryFilter, ...categoryFilter, ...priceFilter },
     });
 
     return {
@@ -321,4 +335,9 @@ export const getFeaturedProducts = async () => {
   });
 
   return convertToPlainObject(products);
+};
+
+export const getProductsCount = async () => {
+  const count = await prisma.product.count();
+  return count;
 };

@@ -127,3 +127,12 @@ export const convertToNumber = (value: string | number): number => {
 
 // Sorting products options
 export const PRODUCT_SORT_OPTIONS = ['newest', 'lowest', 'highest', 'rating'];
+
+export const productsPriceRanges = [
+  { id: 'all', label: 'All Prices', value: null },
+  { id: '50-100', label: 'AED 50 - AED 100', value: '50-100' },
+  { id: '100-200', label: 'AED 100 - AED 200', value: '100-200' },
+  { id: '200-500', label: 'AED 200 - AED 500', value: '200-500' },
+  { id: '500-1000', label: 'AED 500 - AED 1000', value: '500-1000' },
+  { id: 'over-1000', label: 'Over AED 1000', value: '1000' },
+];

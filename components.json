@@ -24,6 +24,9 @@
     "@ss-blocks": "https://shadcnstudio.com/r/blocks/{name}.json",
     "@ss-themes": "https://shadcnstudio.com/r/themes/{name}.json",
     "@hooks": "https://shadcn-hooks.vercel.app/r/{name}.json",
-    "@reui": "https://reui.io/r/{name}.json"
+    "@reui": "https://reui.io/r/{name}.json",
+    "@shadcnstore": {
+      "url": "https://shadcnstore.com/r/{name}.json"
+    }
   }
 }
