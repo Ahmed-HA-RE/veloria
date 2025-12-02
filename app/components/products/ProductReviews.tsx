@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Rating } from '../ui/star-rating';
+import ProductReviewForm from './ProductReviewForm';
 
 type ProductReviewsProps = {
   productId: string;
@@ -144,7 +145,7 @@ const ProductReviews = ({
                 to share your review
               </div>
             ) : (
-              <Button>Write a Review</Button>
+              <ProductReviewForm />
             )}
           </div>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 '>

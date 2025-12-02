@@ -61,3 +61,8 @@ export const baseReviewSchema = z.object({
     .min(10, 'Comment is required')
     .max(1000, 'Comment is too long'),
 });
+
+export const createReviewSchema = baseReviewSchema.omit({
+  productId: true,
+  userId: true,
+});
