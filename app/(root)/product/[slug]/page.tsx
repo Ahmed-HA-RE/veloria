@@ -1,12 +1,9 @@
 import { getProductBySlug } from '@/lib/actions/products';
 import { notFound } from 'next/navigation';
-import ActionDrawer from '@/app/components/products/ActionDrawer';
 import { convertToPlainObject } from '@/lib/utils';
-import ProductImages from '@/app/components/products/ProductImages';
 import { getMyCart } from '@/lib/actions/cart';
-import { Rating } from '@/app/components/ui/star-rating';
-
 import ProductReviews from '@/app/components/products/ProductReviews';
+import ProductDetails from '@/app/components/products/ProductDetails';
 
 const ProductDetailsPage = async ({
   params,
@@ -17,48 +14,11 @@ const ProductDetailsPage = async ({
   const product = await getProductBySlug(slug);
   if (!product) return notFound();
   const cart = await getMyCart();
-
   return (
-    <section>
-      <ActionDrawer product={convertToPlainObject(product)} cart={cart} />
-      <div className='flex flex-col md:flex-row  md:items-start gap-6 mt-4'>
-        {/* Image */}
-        <div className='flex-1/3 mx-auto w-full'>
-          <ProductImages images={product.images} />
-        </div>
-        {/* Details */}
-        <div className='flex-1/3 md:pt-4'>
-          <div className='flex flex-col justify-center items-start gap-5'>
-            <p>{product.brand}</p>
-            <h2 className='text-2xl font-bold'>{product.name}</h2>
-            <div className='flex flex-row items-center gap-2'>
-              {product.numReviews > 0 && (
-                <Rating
-                  size={25}
-                  variant={'yellow'}
-                  value={Number(product.rating)}
-                  precision={0.5}
-                  readOnly
-                />
-              )}
-              <p className='text-muted-foreground'>
-                {product.numReviews} customer reviews
-              </p>
-            </div>
-            <div className='flex flex-row items-center justify-center gap-0.5 text-green-700 dark:text-green-800 py-2 px-4 rounded-full bg-green-200/80 dark:bg-green-300/80'>
-              <p className='dirham-symbol'>&#xea;</p>
-              <p>{product.price}</p>
-            </div>
-            <div className=' font-bold text-lg'>
-              Description
-              <p className='font-normal text-base'>{product.description}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Reviews */}
+    <>
+      <ProductDetails product={convertToPlainObject(product)} cart={cart} />
       <ProductReviews productId={product.id} productSlug={product.slug} />
-    </section>
+    </>
   );
 };
 

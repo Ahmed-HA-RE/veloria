@@ -1,24 +1,6 @@
 const sampleData = {
   products: [
     {
-      name: 'Nike Air Sprint Shoes',
-      slug: 'nike-air-sprint-shoes',
-      category: "Men's Sneakers",
-      description: 'Lightweight running shoes designed for speed and comfort',
-      images: [
-        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764330999/bayro/awyh4uukqg0yfvch2tbu.jpg',
-        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764331001/bayro/ue5sgjcvedm0cqiugfsy.jpg',
-      ],
-      price: 765.95,
-      brand: 'Nike',
-      rating: 4.8,
-      numReviews: 20,
-      stock: 0,
-      isFeatured: true,
-      banner:
-        'https://res.cloudinary.com/ahmed--dev/image/upload/v1764346996/bayro/axswvekoinv1k9widmcs.jpg',
-    },
-    {
       name: 'Nike Air Jordan Retro',
       slug: 'nike-air-jordan-retro',
       category: "Men's Sneakers",
