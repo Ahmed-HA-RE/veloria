@@ -1,4 +1,10 @@
 import { clsx, type ClassValue } from 'clsx';
+import {
+  Clock8Icon,
+  CreditCardIcon,
+  ShieldBanIcon,
+  TruckIcon,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 import z from 'zod';
@@ -140,4 +146,31 @@ export const productsPriceRanges = [
   { id: '200-500', label: 'AED 200 - AED 500', value: '200-500' },
   { id: '500-1000', label: 'AED 500 - AED 1000', value: '500-1000' },
   { id: 'over-1000', label: 'Over AED 1000', value: '1000' },
+];
+
+export const featuresItems = [
+  {
+    icon: CreditCardIcon,
+    title: 'Seamless Payments',
+    description:
+      'Enjoy a smooth and flexible checkout experience with multiple payment options designed to make every purchase effortless.',
+  },
+  {
+    icon: ShieldBanIcon,
+    title: 'Secure Transactions',
+    description:
+      'Your safety comes first. Every order is protected with advanced security measures to ensure complete peace of mind.',
+  },
+  {
+    icon: Clock8Icon,
+    title: 'Responsive Support',
+    description:
+      'Our team is always ready to help. Get fast, reliable assistance whenever you need it for a hassle-free shopping experience.',
+  },
+  {
+    icon: TruckIcon,
+    title: 'Free Shipping Over 100 AED',
+    description:
+      'Enjoy complimentary delivery on all orders above 100 AED making your shopping experience even more rewarding.',
+  },
 ];
